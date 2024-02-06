@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-friendgrid",
+  "name": "n8n-nodes-clicksend",
   "version": "1.1.0",
   "description": "",
   "keywords": [
@@ -8,12 +8,12 @@
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "waqas",
+    "name": "ClickSend",
     "email": "waqas777666@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WaqasShaukat76/clicksend-Node.git"
+    "url": "https://github.com/ClickSend/integration-n8n"
   },
   "main": "index.js",
   "scripts": {

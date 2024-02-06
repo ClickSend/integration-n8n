@@ -1,47 +1,74 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n ClickSend Node
 
-# n8n-nodes-Clicksend
+## Description
 
-This repo contains Clicksend nodes you get started  for [clicksend](clicksend.com). It includes the node linter and other dependencies.
-
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+This node allows you to interact with ClickSend API to send SMS, MMS, Fax, Voice messages, and more using n8n workflows.
 
 ## Prerequisites
 
-You need the following installed on your development machine:
+Before using this node, you need to have a ClickSend account. Obtain the API key from your ClickSend account, as it will be required for authentication.
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 16. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-	```
-	npm install n8n -g
-	```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## Installation
 
+1. Open your n8n workflow editor.
+2. Navigate to "Nodes" in the top menu.
+3. Click on the "+" button to add a new node.
+4. Search for "ClickSend" in the search bar.
+5. Click on the "ClickSend" node to add it to your workflow.
+6. Configure the ClickSend node with your API key and other required parameters.
 
-## Using this starter
+## Usage
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+1. Drag and drop the ClickSend node into your workflow.
+2. Connect it to other nodes as needed.
+3. Configure the parameters based on the type of message you want to send (SMS, MMS, Fax, Voice, etc.).
+4. Execute your workflow.
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-    ```
-    git clone https://github.com/<your organization>/<your-repo-name>.git
-    ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+## Parameters
 
-## More information
+- **Resource**: Select the type of resource you want to interact with (SMS, MMS, Fax, Voice, etc.).
+- **Operation**: Select the operation to perform on the chosen resource (e.g., Send, List, etc.).
+- **From**: The sender's phone number for SMS, Fax, or Voice messages.
+- **From/Sender ID**: The sender's ID for MMS messages.
+- **To**: The recipient's phone number.
+- **Contact List ID**: The contact list ID for sending SMS to a contact list.
+- **Message**: The text message to send.
+- **Body**: The message body for Voice and MMS messages.
+- **Custom String**: Custom string to include with the message.
+- **URL**: The media file URL for MMS and Fax messages.
+- **Subject**: The subject for MMS messages.
+- **From Email**: The email address for Fax messages.
+- **Voice**: Select the voice type for Voice messages (Male or Female).
+- **Schedule**: Schedule the message to be sent at a specific date and time.
+- **Address Name**: Name of the recipient for Letter messages.
+- **Address Line 1/2**: Address details for Letter messages.
+- **Address City/State/Postal Code**: City, state, and postal code for Letter messages.
+- **Return Address ID**: ID for the return address for Letter messages.
+- **Country Name or ID**: Country name or ID for Fax messages.
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+## Example
+
+Here's an example of a workflow using the ClickSend node to send an SMS:
+
+1. Drag and drop the ClickSend node.
+2. Connect it to a Trigger node or any other nodes in your workflow.
+3. Set the parameters:
+   - Resource: SMS
+   - Operation: Send
+   - From: Your phone number
+   - To: Recipient's phone number
+   - Message: Your text message
+4. Execute the workflow.
 
 ## License
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+This ClickSend node for n8n is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- This node is not officially affiliated with ClickSend and is provided as a community contribution.
+
+## Support
+
+For assistance or issues, please [raise a GitHub issue](https://github.com/your-repository/clicksend-node/issues).
+
