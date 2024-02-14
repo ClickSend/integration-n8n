@@ -37,7 +37,8 @@ export class FriendGrid implements INodeType {
 						value: 'letter',
 					},
 					{
-						name: 'Send MMS.',
+						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+						name: 'Send MMS',
 						value: 'mms',
 					},
 					{
@@ -45,7 +46,8 @@ export class FriendGrid implements INodeType {
 						value: 'card',
 					},
 					{
-						name: 'Send SMS .',
+						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+						name: 'Send SMS',
 						value: 'sms',
 					},
 					{
@@ -941,6 +943,7 @@ export class FriendGrid implements INodeType {
   				colour: colour,
   				duplex: duplex,
   				priority_post: priority_post,
+					source:"n8n",
 					recipients: [
 						{
 							return_address_id: return_address_id,
@@ -981,6 +984,7 @@ export class FriendGrid implements INodeType {
 				method: 'POST',
 				body: {
 					file_url:file_url,
+					source:"n8n",
 					recipients: [
 						{
 							return_address_id: return_address_id,

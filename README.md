@@ -59,6 +59,42 @@ Here's an example of a workflow using the ClickSend node to send an SMS:
    - To: Recipient's phone number
    - Message: Your text message
 4. Execute the workflow.
+## ClickSend Trigger Node
+
+This ClickSend n8n package also includes a trigger node that allows you to initiate a workflow when a message is received in your ClickSend account.
+
+### Trigger Configuration
+
+1. Drag and drop the ClickSend Trigger node into your workflow.
+2. Configure the parameters:
+   - **Event Type**: Select the type of event to trigger the workflow (e.g., "Message Received").
+   - **Webhook URL**: Set up a webhook in your ClickSend account and enter the URL here.
+   - **Shared Secret**: (Optional) If you've configured a shared secret in your webhook, enter it here.
+3. Connect the trigger node to other nodes in your workflow.
+4. Execute the workflow.
+
+### Example Workflow
+
+Here's a simple example of a workflow that triggers when a message is received:
+
+1. Add the ClickSend Trigger node.
+2. Connect it to other nodes in your workflow.
+3. Configure the trigger node with the appropriate settings.
+4. Add nodes to process the received message.
+5. Execute the workflow.
+
+### Note
+
+- Make sure to configure your ClickSend account to send message events to the webhook URL provided in the ClickSend Trigger node configuration.
+
+### License
+
+The ClickSend Trigger node for n8n is licensed under the [MIT License](LICENSE).
+
+### Support
+
+For assistance or issues related to the ClickSend Trigger node, please [raise a GitHub issue](https://github.com/your-repository/clicksend-trigger-node/issues).
+
 
 ## License
 
