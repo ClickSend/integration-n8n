@@ -24,7 +24,7 @@ export class FriendGrid implements INodeType {
 		properties: [
 			//resource here
 			{
-				displayName: 'Resource',
+				displayName: 'Action',
 				name: 'resource',
 				type: 'options',
 				options: [
@@ -207,12 +207,14 @@ export class FriendGrid implements INodeType {
 			},
 			//here is parameter that we need for https call
 			{
-				displayName: 'From/Sender Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Sender name/ From Field',
 				name: 'from',
 				type: 'options',
 				default: '',
 				placeholder: '+6144444444',
-				description: 'From Number. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
+				description: 'Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard <a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">expression</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
 				},
@@ -224,7 +226,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'From/Sender ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Sender name/ From Field',
 				name: 'from',
 				type: 'string',
 				required:true,
@@ -239,13 +242,14 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'To',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Recipient number / To field',
 				name: 'to',
 				type: 'string',
 				default: '',
 				required: true,
 				placeholder: '+61668268263',
-				description: 'Number which you want to send message',
+				description: 'The number can be in local or international format. If '+'youre sending to another country, the number must be in international format. E.g +61411111111.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -260,7 +264,8 @@ export class FriendGrid implements INodeType {
 				default: '',
 				required: true,
 				placeholder: '',
-				description: 'Contact list ID which you want to send message. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-missing-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
+				description: 'Contact list ID which you want to send message. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">More info</a>',
 				typeOptions: {
 					loadOptionsMethod: 'contactlist',
 				},
@@ -272,7 +277,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Message body',
 				name: 'message',
 				type: 'string',
 				typeOptions: {
@@ -281,7 +287,7 @@ export class FriendGrid implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'Hi clickSend',
-				description: 'Message that you want to send',
+				description: 'A standard SMS is 160 standard characters <a href="https://docs.n8n.io/code-examples/expressions/">More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],

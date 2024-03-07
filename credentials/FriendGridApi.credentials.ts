@@ -11,14 +11,14 @@ export class FriendGridApi implements ICredentialType {
 	documentationUrl = 'https://dashboard.clicksend.com/account/subaccounts?utm_source=integration&utm_medium=referral&utm_campaign=n8n';
 	properties: INodeProperties[] = [
 		{
-			displayName: 'Username',
+			displayName: 'ClickSend Username',
 			name: 'username',
 			type: 'string',
 			typeOptions: { password: false },
 			default: '',
 		},
 		{
-			displayName: 'API Key',
+			displayName: 'ClickSend API Key',
 			name: 'apiKey',
 			type: 'string',
 			typeOptions: { password: true },
