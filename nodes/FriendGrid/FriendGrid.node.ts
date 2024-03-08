@@ -609,7 +609,7 @@ export class FriendGrid implements INodeType {
 				name: 'schedule',
 				type: 'dateTime',
 				default: '',
-				description: 'The date and time when want to send',
+				description: 'The date and time that the message will be sent',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -623,7 +623,7 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				default: '',
 				placeholder: 'this is Custom String',
-				description: 'Custom String which you want to send with message',
+				description: 'This is your reference. Max 50 characters.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
