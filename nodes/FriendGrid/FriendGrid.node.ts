@@ -214,7 +214,7 @@ export class FriendGrid implements INodeType {
 				default: '',
 				placeholder: '+6144444444',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
-				description: 'Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard <a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">expression</a>.',
+				description: 'Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard <a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
 				},
@@ -287,7 +287,7 @@ export class FriendGrid implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'Hi clickSend',
-				description: 'A standard SMS is 160 standard characters <a href="https://docs.n8n.io/code-examples/expressions/">More info</a>',
+				description: 'A standard SMS is 160 standard characters <a href="https://help.clicksend.com/article/h474eseq3a-how-many-characters-can-i-send-in-an-sms?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -801,7 +801,19 @@ export class FriendGrid implements INodeType {
 				json: true,
 			};
 			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+			if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
+			{
 			returnData.push(responseData);
+			}else
+			{
+				let data=
+				{
+					status:"Message not Send",
+					reason:responseData.data.messages[0].status
+				}
+				returnData.push(data);
+
+			}
 
 
 
@@ -834,7 +846,19 @@ export class FriendGrid implements INodeType {
 				json: true,
 			};
 			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+			if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
+			{
 			returnData.push(responseData);
+			}else
+			{
+				let data=
+				{
+					status:"Message not Send",
+					reason:responseData.data.messages[0].status
+				}
+				returnData.push(data);
+
+			}
 
 		}//#3 for sending fax
 		else if(resource==='fax' && operation==='send')
