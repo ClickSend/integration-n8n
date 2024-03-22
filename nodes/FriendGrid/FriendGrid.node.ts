@@ -806,12 +806,25 @@ export class FriendGrid implements INodeType {
 			returnData.push(responseData);
 			}else
 			{
-				let data=
+				if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
 				{
-					status:"Message not Send",
-					reason:responseData.data.messages[0].status
+					let data=
+				{
+					status:"INVALID_RECIPIENT",
+					reason:"That number doesn't look quite right. Check it and try again. "
 				}
 				returnData.push(data);
+
+				}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
+				{
+					let data=
+				{
+					status:"INSUFFICIENT_CREDIT",
+					reason:"You don't have enough credit to send. Top up your account."
+				}
+				returnData.push(data);
+				}
+
 
 			}
 
@@ -851,13 +864,24 @@ export class FriendGrid implements INodeType {
 			returnData.push(responseData);
 			}else
 			{
-				let data=
+				if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
 				{
-					status:"Message not Send",
-					reason:responseData.data.messages[0].status
+					let data=
+				{
+					status:"INVALID_RECIPIENT",
+					reason:"That number doesn't look quite right. Check it and try again. "
 				}
 				returnData.push(data);
 
+				}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
+				{
+					let data=
+				{
+					status:"INSUFFICIENT_CREDIT",
+					reason:"You don't have enough credit to send. Top up your account."
+				}
+				returnData.push(data);
+				}
 			}
 
 		}//#3 for sending fax
