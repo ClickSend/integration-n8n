@@ -208,7 +208,7 @@ export class FriendGrid implements INodeType {
 			//here is parameter that we need for https call
 			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Sender name/ From Field',
+				displayName: 'Sender name/From field',
 				name: 'from',
 				type: 'options',
 				default: '',
