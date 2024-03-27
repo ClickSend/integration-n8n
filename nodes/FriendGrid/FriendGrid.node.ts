@@ -328,21 +328,21 @@ export class FriendGrid implements INodeType {
 					},
 				},
 			},
-			{
-				displayName: 'Custom String',
-				name: 'custom_string',
-				type: 'string',
-				required:true,
-				default: '',
-				placeholder: 'this is Custom String',
-				description: 'Custom String which you want to send with message',
-				displayOptions: {
-					show: {
-						operation: ['send'],
-						resource: ['voice'],
-					},
-				},
-			},
+			// {
+			// 	displayName: 'Custom String',
+			// 	name: 'custom_string',
+			// 	type: 'string',
+			// 	required:true,
+			// 	default: '',
+			// 	placeholder: 'this is Custom String',
+			// 	description: 'Custom String which you want to send with message',
+			// 	displayOptions: {
+			// 		show: {
+			// 			operation: ['send'],
+			// 			resource: ['voice'],
+			// 		},
+			// 	},
+			// },
 
 			{
 				displayName: 'Subject',
@@ -627,7 +627,7 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['sms', 'list', 'fax','card'],
+						resource: ['sms', 'list', 'fax'],
 					},
 				},
 			},
