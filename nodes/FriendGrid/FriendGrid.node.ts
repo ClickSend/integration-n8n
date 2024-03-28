@@ -631,6 +631,25 @@ export class FriendGrid implements INodeType {
 					},
 				},
 			},
+			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
+				displayName: 'Language',
+				name: 'lang',
+				type: 'options',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options
+				description: 'Select from the dropdown list. Choose from the list<a href="https://developers.clicksend.com/docs/rest/v3/#view-voice-languages">More Info</a>.',
+				noDataExpression: true,
+				default: '',
+				typeOptions: {
+					loadOptionsMethod: 'language',
+				},
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['voice'],
+					},
+				},
+			},
 		],
 	};
 	// The loadOptions method will go here
@@ -658,6 +677,32 @@ export class FriendGrid implements INodeType {
 						{
 							name: countryobj[i].value,
 							value: countryobj[i].code,
+						})
+				};
+				return returnData;
+			},
+			//fetch language from clicksend
+			async language(this: ILoadOptionsFunctions): Promise<any[]> {
+				const returnData: any[] = [];
+
+				const optionsForLanguage: OptionsWithUri = {
+					headers: {
+						Accept: 'application/json',
+					},
+					method: 'GET',
+					uri: 'https://rest.clicksend.com/v3/voice/lang',
+					json: true,
+				};
+
+				const languageResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForLanguage);
+
+				const langobj=languageResponse.data;
+				for(let i=0;i<langobj.length;i++)
+				{
+					returnData.push(
+						{
+							name: langobj[i].country,
+							value: langobj[i].code,
 						})
 				};
 				return returnData;
@@ -950,6 +995,11 @@ export class FriendGrid implements INodeType {
 		}//#5 for sending Voice
 		else if(resource==='voice' && operation==='send')
 		{
+
+			const to = this.getNodeParameter('to', 0) as number;
+			const body=this.getNodeParameter('body',0) as string;
+			const voice=this.getNodeParameter('voice',0) as string;
+			const lang=this.getNodeParameter('lang',0) as string;
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -958,10 +1008,13 @@ export class FriendGrid implements INodeType {
 				body: {
 					messages: [
 						{
-							from: 'from',
-							to: 'to',
-							body: 'message',
+
+							to: to,
+							body: body,
 							source: 'n8n',
+							lang:lang,
+							voice:voice,
+							machine_detection: 0
 						},
 					],
 				},
