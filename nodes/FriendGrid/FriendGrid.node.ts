@@ -1083,7 +1083,7 @@ export class FriendGrid implements INodeType {
 			const address_postal_code = this.getNodeParameter('address_postal_code', 0) as string;
 			const address_country=this.getNodeParameter('country',0) as string;
 			const return_address_id = this.getNodeParameter('return_address_id', 0) as number;
-			const custom_string = this.getNodeParameter('custom_string', 0) as string;
+			// const custom_string = this.getNodeParameter('custom_string', 0) as string;
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1102,7 +1102,6 @@ export class FriendGrid implements INodeType {
 							address_name: address_name,
 							address_line_2: address_line_2,
 							address_city: address_city,
-							custom_string:custom_string
 						},
 					],
 				},
