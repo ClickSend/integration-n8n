@@ -51,7 +51,8 @@ export class FriendGrid implements INodeType {
 						value: 'sms',
 					},
 					{
-						name: 'Send SMS to a Contact List',
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+						name: 'Send SMS to a contact List',
 						value: 'list',
 					},
 					{
@@ -178,7 +179,7 @@ export class FriendGrid implements INodeType {
 					{
 						name: 'Send',
 						value: 'send',
-						description: 'Send a MMS',
+						description: 'Send an MMS',
 						action: 'Send a mms',
 					},
 				],
@@ -221,7 +222,23 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['sms', 'list','fax'],
+						resource: ['sms', 'list',],
+					},
+				},
+			},
+			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Sender name/From field',
+				name: 'from',
+				type: 'string',
+				default: '',
+				placeholder: 'Eg: +61 44 444 444 ',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
+				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['fax'],
 					},
 				},
 			},
@@ -232,8 +249,9 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				required:true,
 				default: '',
-				placeholder: '+6144444444',
-				description: 'From Number',
+				placeholder: 'Eg: +61 44 444 444 ',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
+				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a>: Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -248,7 +266,7 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				default: '',
 				required: true,
-				placeholder: '+61668268263',
+				placeholder: 'Eg: +61 44 444 444 ',
 				description: 'The number can be in local or international format. If '+'youre sending to another country, the number must be in international format. E.g +61411111111.',
 				displayOptions: {
 					show: {
@@ -258,14 +276,15 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Contact List Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased, n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
+				displayName: 'Name or ID of contact list',
 				name: 'contact_list',
 				type: 'options',
 				default: '',
 				required: true,
 				placeholder: '',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-missing-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
-				description: 'Contact list ID which you want to send message. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">More info</a>',
+				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. More info.',
 				typeOptions: {
 					loadOptionsMethod: 'contactlist',
 				},
@@ -286,12 +305,45 @@ export class FriendGrid implements INodeType {
 				},
 				default: '',
 				required: true,
-				placeholder: 'Hi clickSend',
-				description: 'A standard SMS is 160 standard characters.<a href="https://help.clicksend.com/article/h474eseq3a-how-many-characters-can-i-send-in-an-sms?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a>',
+				placeholder: 'Write your message here. A standard SMS is 160 standard characters.',
+				description: 'A standard SMS is 160 standard characters.<a href="https://help.clicksend.com/article/h474eseq3a-how-many-characters-can-i-send-in-an-sms?utm_source=integration&utm_medium=referral&utm_campaign=n8n"> More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],
 						resource: ['sms','list'],
+					},
+				},
+			},
+			{
+				displayName: 'Image URL',
+				name: 'url',
+				type: 'string',
+				default: '',
+				required:true,
+				placeholder: 'https://docs.google.com/yurejfJFM/ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'The URL for the image or GIF you want to send.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['mms','fax'],
+					},
+				},
+			},
+
+			{
+				displayName: 'File URL',
+				name: 'url',
+				type: 'string',
+				default: '',
+				required:true,
+				placeholder: 'https://docs.google.com/yurejfJFM/ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'The URL for the image you want to send as a postcard.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['card'],
 					},
 				},
 			},
@@ -302,16 +354,18 @@ export class FriendGrid implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				description: 'File URL which you want to send with MMS',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'The URL for the letter you want to send.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['mms', 'fax','letter','card'],
+						resource: ['letter'],
 					},
 				},
 			},
 			{
-				displayName: 'Body',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Message body',
 				name: 'body',
 				type: 'string',
 				typeOptions: {
@@ -319,38 +373,9 @@ export class FriendGrid implements INodeType {
 				},
 				default: '',
 				required: true,
-				placeholder: 'Biscuit uv3nlCOjRk croissant chocolate lollipop chocolate muffin.',
-				description: 'Message that you want to send in voice',
-				displayOptions: {
-					show: {
-						operation: ['send'],
-						resource: ['voice','mms'],
-					},
-				},
-			},
-			// {
-			// 	displayName: 'Custom String',
-			// 	name: 'custom_string',
-			// 	type: 'string',
-			// 	required:true,
-			// 	default: '',
-			// 	placeholder: 'this is Custom String',
-			// 	description: 'Custom String which you want to send with message',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['send'],
-			// 			resource: ['voice'],
-			// 		},
-			// 	},
-			// },
-
-			{
-				displayName: 'Subject',
-				name: 'subject',
-				type: 'string',
-				required:true,
-				default: '',
-				description: 'Subject of MMS',
+				placeholder: 'Max of 1500 characters allowed in MMS.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Write your message here.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -359,11 +384,51 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'From Email',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Message body',
+				name: 'body',
+				type: 'string',
+				typeOptions: {
+					rows: 4,
+				},
+				default: '',
+				required: true,
+				placeholder: 'You can type your message here.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'This is the message you will send via voice.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['voice'],
+					},
+				},
+			},
+
+
+			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Subject line',
+				name: 'subject',
+				type: 'string',
+				required:true,
+				default: '',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Enter the subject line of the MMS.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['mms'],
+					},
+				},
+			},
+			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'From email',
 				name: 'from_email',
 				type: 'string',
 				default: '',
-				description: 'An email address where the reply should be emailed to',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Enter the email address that you want replies sent to.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -372,7 +437,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Voice',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Voice type',
 				name: 'voice',
 				type: 'options',
 				options: [
@@ -386,7 +452,7 @@ export class FriendGrid implements INodeType {
 					},
 				],
 				default: 'male',
-				description: 'Either female or male',
+				description: 'Male or Female',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -395,16 +461,34 @@ export class FriendGrid implements INodeType {
 				},
 			},
 						{
-				displayName: 'Address Name',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Recpient name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
 				default: '',
-				description: 'Name of address',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: "The name of the person you're sending the postcard to.",
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['letter','card'],
+						resource: ['card'],
+					},
+				},
+			},
+			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Recpient name',
+				name: 'address_name',
+				type: 'string',
+				required:true,
+				default: '',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: "The name of the person you're sending the postletter to.",
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['letter'],
 					},
 				},
 			},
@@ -414,7 +498,7 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				required:true,
 				default: '',
-				description: 'First line of address',
+				description: 'First line of the address',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -426,9 +510,8 @@ export class FriendGrid implements INodeType {
 				displayName: 'Address Line 2',
 				name: 'address_line_2',
 				type: 'string',
-				required:true,
 				default: '',
-				description: 'Second line of address',
+				description: 'Second line of the address',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -437,12 +520,12 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Address City',
+				displayName: 'City',
 				name: 'address_city',
 				type: 'string',
 				required:true,
 				default: '',
-				description: 'City',
+				description: 'Enter the city',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -451,12 +534,12 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Address State',
+				displayName: 'State',
 				name: 'address_state',
 				type: 'string',
 				default: '',
 				required:true,
-				description: 'State',
+				description: 'Enter the state',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -465,12 +548,13 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Address Postal Code',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Postal code',
 				name: 'address_postal_code',
 				type: 'string',
 				required:true,
 				default: '',
-				description: 'Postal Code',
+				description: 'Enter the postal code',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -479,12 +563,14 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Return Address Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased, n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
+				displayName: 'Return address',
 				name: 'return_address_id',
 				type: 'options',
 				required:true,
 				default: '',
-				description: 'Return adress name and ID from account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Enter the return address here.',
 				typeOptions:{
 					loadOptionsMethod:'returnadress'
 				},
@@ -496,10 +582,12 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Country Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Select country',
 				name: 'country',
 				type: 'options',
-				description: 'Select from the dropdown list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
+				description: 'Select a country from the dropdown list or enter a country ID using an expression.',
 				noDataExpression: true,
 				default: '',
 				typeOptions: {
@@ -508,7 +596,7 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['fax','letter','card'],
+						resource: ['letter','card'],
 					},
 				},
 			},
@@ -627,7 +715,7 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['sms', 'list', 'fax'],
+						resource: ['sms', 'list'],
 					},
 				},
 			},
@@ -935,8 +1023,6 @@ export class FriendGrid implements INodeType {
 			const from = this.getNodeParameter('from', 0) as string;
 			const to = this.getNodeParameter('to', 0) as number;
 			const file_url = this.getNodeParameter('url', 0) as string;
-			const custom_string=this.getNodeParameter('custom_string',0) as string;
-			const country = this.getNodeParameter('country', 0) as string;
 			const from_email=this.getNodeParameter('from_email',0) as string;
 			const options: OptionsWithUri = {
 				headers: {
@@ -945,14 +1031,12 @@ export class FriendGrid implements INodeType {
 				method: 'POST',
 				body: {
 					file_url:file_url,
-					country:country,
 					from_email:from_email,
 					messages: [
 						{
 							to: to,
       				from: from,
       				source: "n8n",
-      				custom_string: custom_string,
 						},
 					],
 				},
