@@ -333,7 +333,7 @@ export class FriendGrid implements INodeType {
 
 			{
 				displayName: 'File URL',
-				name: 'url',
+				name: 'cardurl',
 				type: 'string',
 				default: '',
 				required:true,
@@ -1158,7 +1158,7 @@ export class FriendGrid implements INodeType {
 		else if(resource==='card' && operation==='send')
 		{
 
-			const file_url = this.getNodeParameter('url', 0) as string;
+			const file_url = this.getNodeParameter('cardurl', 0) as string;
 			const address_name = this.getNodeParameter('address_name', 0) as string;
 			const address_line_1 = this.getNodeParameter('address_line_1', 0) as number;
 			const address_line_2=this.getNodeParameter('address_line_2',0) as string;
@@ -1174,7 +1174,7 @@ export class FriendGrid implements INodeType {
 				},
 				method: 'POST',
 				body: {
-					file_url:file_url,
+					file_urls:[file_url],
 					source:"n8n",
 					recipients: [
 						{
