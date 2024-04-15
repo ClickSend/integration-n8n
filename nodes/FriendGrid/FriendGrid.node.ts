@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-param-description-excess-final-period */
 import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-core';
 import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { OptionsWithUri } from 'request';
@@ -215,7 +216,7 @@ export class FriendGrid implements INodeType {
 				default: '',
 				placeholder: '+6144444444',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
-				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard.',
+				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the <a href="https://dashboard.clicksend.com/sender-ids/manage-senders">Dashboard.</a>',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
 				},
@@ -232,9 +233,9 @@ export class FriendGrid implements INodeType {
 				name: 'from',
 				type: 'string',
 				default: '',
-				placeholder: 'Eg: +61 44 444 444 ',
+				placeholder: 'Eg: +6144444444 ',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
-				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard.',
+				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers.",
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -249,9 +250,9 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				required:true,
 				default: '',
-				placeholder: 'Eg: +61 44 444 444 ',
+				placeholder: 'Eg: +6144444444 ',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
-				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a>: Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the Dashboard.',
+				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers. "+'<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number">More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -266,7 +267,7 @@ export class FriendGrid implements INodeType {
 				type: 'string',
 				default: '',
 				required: true,
-				placeholder: 'Eg: +61 44 444 444 ',
+				placeholder: 'Eg: +6144444444 ',
 				description: 'The number can be in local or international format. If '+'youre sending to another country, the number must be in international format. E.g +61411111111.',
 				displayOptions: {
 					show: {
@@ -284,7 +285,7 @@ export class FriendGrid implements INodeType {
 				required: true,
 				placeholder: '',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-missing-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
-				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. More info.',
+				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. <a href="https://dashboard.clicksend.com/lists/">More info</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'contactlist',
 				},
@@ -462,7 +463,7 @@ export class FriendGrid implements INodeType {
 			},
 						{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Recpient name',
+				displayName: 'Recipient name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
@@ -478,7 +479,7 @@ export class FriendGrid implements INodeType {
 			},
 			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Recpient name',
+				displayName: 'Recipient name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
@@ -587,7 +588,7 @@ export class FriendGrid implements INodeType {
 				name: 'country',
 				type: 'options',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
-				description: 'Select a country from the dropdown list or enter a country ID using an expression.',
+				description: 'Select the country from the dropdown list.',
 				noDataExpression: true,
 				default: '',
 				typeOptions: {
@@ -615,7 +616,7 @@ export class FriendGrid implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'Whether using our letter template. Flag value must be 1 for yes or 0 for no.',
+				description: "If you're using our letter template please select yes.",
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -638,7 +639,8 @@ export class FriendGrid implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'Whether letter is in colour. Flag value must be 1 for yes or 0 for no.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Please select yes for colour or no for black and white.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -661,7 +663,8 @@ export class FriendGrid implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'Duplex use',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'If you would like double-sided printing please select yes.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -684,7 +687,8 @@ export class FriendGrid implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'Whether letter is priority, Flag value must be 1 for yes or 0 for no',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+				description: 'If you want to send the letter via priority post please select yes.',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -724,8 +728,8 @@ export class FriendGrid implements INodeType {
 				displayName: 'Language',
 				name: 'lang',
 				type: 'options',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options
-				description: 'Select from the dropdown list. Choose from the list<a href="https://developers.clicksend.com/docs/rest/v3/#view-voice-languages">More Info</a>.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-excess-final-period
+				description: 'Choose the language that matches your text so your message is read correctly.',
 				noDataExpression: true,
 				default: '',
 				typeOptions: {
