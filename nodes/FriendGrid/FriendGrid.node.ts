@@ -485,7 +485,7 @@ export class FriendGrid implements INodeType {
 				required:true,
 				default: '',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
-				description: "The name of the person you're sending the postletter to.",
+				description: "The name of the person you're sending the letter to.",
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -602,7 +602,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Template Used',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Letter template',
 				name: 'template_used',
 				type: 'options',
 				options: [
@@ -625,7 +626,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Colour',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Colour printing',
 				name: 'colour',
 				type: 'options',
 				options: [
@@ -649,7 +651,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Duplex',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Double-sided printing',
 				name: 'duplex',
 				type: 'options',
 				options: [
@@ -673,7 +676,8 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Priority Post',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Priority post',
 				name: 'priority_post',
 				type: 'options',
 				options: [
