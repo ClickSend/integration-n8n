@@ -248,7 +248,6 @@ export class FriendGrid implements INodeType {
 				displayName: 'Sender name/ From Field',
 				name: 'from',
 				type: 'string',
-				required:true,
 				default: '',
 				placeholder: 'Eg: +6144444444 ',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
@@ -820,15 +819,27 @@ export class FriendGrid implements INodeType {
 				const adressResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForReturnadress);
 				console.log(adressResponse);
 				const returnadress=adressResponse.data.data;
+				if(returnadress.length<1)
+					{
+						returnData.push(
+							{
+								name:"",
+								value:"",
+							})
 
-				for(let i=0;i<returnadress.length;i++)
-				{
-					returnData.push(
-						{
-							name: returnadress[i].address_name,
-							value: returnadress[i].return_address_id,
-						})
-				};
+					}else
+					{
+						for(let i=0;i<returnadress.length;i++)
+							{
+								returnData.push(
+									{
+										name: returnadress[i].address_name,
+										value: returnadress[i].return_address_id,
+									})
+							};
+					}
+
+
 				return returnData;
 			},
 			//fetch dedicated number from clicksend
@@ -847,16 +858,28 @@ export class FriendGrid implements INodeType {
 				const dedicatednumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsFordedicatednumber);
 				console.log(dedicatednumberResponse);
 				const dedicated_number=dedicatednumberResponse.data.data;
+				if(dedicated_number.length<1)
+					{
+						returnData.push(
+							{
+								name:"",
+								value:"",
+							})
+					}else
+					{
+						for(let i=0;i<dedicated_number.length;i++)
+							{
+								returnData.push(
+									{
+										name: dedicated_number[i].dedicated_number,
+										value: dedicated_number[i].dedicated_number,
+									})
+							};
 
-				for(let i=0;i<dedicated_number.length;i++)
-				{
-					returnData.push(
-						{
-							name: dedicated_number[i].dedicated_number,
-							value: dedicated_number[i].dedicated_number,
-						})
-				};
-				return returnData;
+
+					}
+					return returnData;
+
 			},
 			//fetch contact list from account
 			//fetch dedicated number from clicksend
@@ -923,52 +946,69 @@ export class FriendGrid implements INodeType {
 			const to = this.getNodeParameter('to', 0) as string;
 			const message = this.getNodeParameter('message', 0) as string;
 			const custom_string=this.getNodeParameter('custom_string',0) as string;
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					messages: [
-						{
-							from: from,
-							to: to,
-							body: message,
-							source: 'n8n',
-							custom_string:custom_string,
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/sms/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
-			{
-			returnData.push(responseData);
-			}else
-			{
-				if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
+			const schedule=this.getNodeParameter('schedule',0) as Date;
+			console.log(schedule.getSeconds());
+		//	if(from.length<11)
+			//	{
+				const options: OptionsWithUri = {
+					headers: {
+						Accept: 'application/json',
+					},
+					method: 'POST',
+					body: {
+						messages: [
+							{
+								from: from,
+								to: to,
+								body: message,
+								source: 'n8n',
+								custom_string:custom_string,
+							},
+						],
+					},
+					uri: `https://rest.clicksend.com/v3/sms/send`,
+					json: true,
+				};
+				responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+				if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
 				{
-					let data=
+				returnData.push(responseData);
+				}else
 				{
-					status:"INVALID_RECIPIENT",
-					reason:"That number doesn't look quite right. Check it and try again. "
-				}
-				returnData.push(data);
+					if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
+					{
+						let data=
+					{
+						status:"INVALID_RECIPIENT",
+						reason:"That number doesn't look quite right. Check it and try again. "
+					}
+					returnData.push(data);
 
-				}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
-				{
-					let data=
-				{
-					status:"INSUFFICIENT_CREDIT",
-					reason:"You don't have enough credit to send. Top up your account."
-				}
-				returnData.push(data);
-				}
+					}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
+					{
+						let data=
+					{
+						status:"INSUFFICIENT_CREDIT",
+						reason:"You don't have enough credit to send. Top up your account."
+					}
+					returnData.push(data);
+					}
+
 
 
 			}
+		//}else{
+			// let data=
+			// 		{
+			// 			status:"Message Not Send",
+			// 			reason:"invalid sender id SMS is not sent from an alpha tag longer than 11 characters..",
+			// 			schedule:schedule.getMilliseconds()
+			// 		}
+			// 		returnData.push(data);
+
+			// }
+
+
 
 
 
