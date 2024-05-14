@@ -934,9 +934,6 @@ export class FriendGrid implements INodeType {
 		const returnData = [];
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
-		// const from = this.getNodeParameter('from', 0) as string;
-		// const to = this.getNodeParameter('to', 0) as string;
-		// const message = this.getNodeParameter('message', 0) as string;
 		// Make HTTP request according to https://developers.clicksend.com/docs/rest/v3/
 
 //#1 for sending sms
@@ -946,8 +943,14 @@ export class FriendGrid implements INodeType {
 			const to = this.getNodeParameter('to', 0) as string;
 			const message = this.getNodeParameter('message', 0) as string;
 			const custom_string=this.getNodeParameter('custom_string',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as Date;
-			console.log(schedule.getSeconds());
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
+				console.log(unixTimestamp)
 		//	if(from.length<11)
 			//	{
 				const options: OptionsWithUri = {
@@ -963,6 +966,7 @@ export class FriendGrid implements INodeType {
 								body: message,
 								source: 'n8n',
 								custom_string:custom_string,
+								schedule:unixTimestamp
 							},
 						],
 					},
