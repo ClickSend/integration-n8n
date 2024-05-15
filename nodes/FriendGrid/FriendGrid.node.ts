@@ -701,33 +701,6 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'Schedule',
-				name: 'schedule',
-				type: 'dateTime',
-				default: '',
-				description: 'The date and time that the message will be sent',
-				displayOptions: {
-					show: {
-						operation: ['send'],
-						resource: ['fax','sms','list'],
-					}
-				},
-			},
-			{
-				displayName: 'Custom String',
-				name: 'custom_string',
-				type: 'string',
-				default: '',
-				placeholder: 'this is Custom String',
-				description: 'This is your reference. Max 50 characters.',
-				displayOptions: {
-					show: {
-						operation: ['send'],
-						resource: ['sms', 'list'],
-					},
-				},
-			},
-			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 				displayName: 'Language',
 				name: 'lang',
@@ -746,6 +719,34 @@ export class FriendGrid implements INodeType {
 					},
 				},
 			},
+			{
+				displayName: 'Schedule',
+				name: 'schedule',
+				type: 'dateTime',
+				default: '',
+				description: 'The date and time that the message will be sent',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['fax','sms','list','voice','card'],
+					}
+				},
+			},
+			{
+				displayName: 'Custom String',
+				name: 'custom_string',
+				type: 'string',
+				default: '',
+				placeholder: 'this is Custom String',
+				description: 'This is your reference. Max 50 characters.',
+				displayOptions: {
+					show: {
+						operation: ['send'],
+						resource: ['sms', 'list'],
+					},
+				},
+			},
+
 		],
 	};
 	// The loadOptions method will go here
@@ -950,7 +951,6 @@ export class FriendGrid implements INodeType {
 				{
 					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
 				}
-				console.log(unixTimestamp)
 		//	if(from.length<11)
 			//	{
 				const options: OptionsWithUri = {
@@ -1001,16 +1001,7 @@ export class FriendGrid implements INodeType {
 
 
 			}
-		//}else{
-			// let data=
-			// 		{
-			// 			status:"Message Not Send",
-			// 			reason:"invalid sender id SMS is not sent from an alpha tag longer than 11 characters..",
-			// 			schedule:schedule.getMilliseconds()
-			// 		}
-			// 		returnData.push(data);
 
-			// }
 
 
 
@@ -1024,6 +1015,13 @@ export class FriendGrid implements INodeType {
 			const list_id = this.getNodeParameter('contact_list', 0) as number;
 			const message = this.getNodeParameter('message', 0) as string;
 			const custom_string=this.getNodeParameter('custom_string',0) as string;
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1036,6 +1034,7 @@ export class FriendGrid implements INodeType {
 							list_id: list_id,
 							body: message,
 							source: 'n8n',
+							schedule:unixTimestamp,
 							custom_string:custom_string,
 
 						},
@@ -1077,6 +1076,13 @@ export class FriendGrid implements INodeType {
 			const to = this.getNodeParameter('to', 0) as number;
 			const file_url = this.getNodeParameter('url', 0) as string;
 			const from_email=this.getNodeParameter('from_email',0) as string;
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1087,9 +1093,10 @@ export class FriendGrid implements INodeType {
 					from_email:from_email,
 					messages: [
 						{
-							to: to,
-      				from: from,
-      				source: "n8n",
+						to: to,
+      					from: from,
+      					source: "n8n",
+					  	schedule:unixTimestamp
 						},
 					],
 				},
@@ -1137,6 +1144,13 @@ export class FriendGrid implements INodeType {
 			const body=this.getNodeParameter('body',0) as string;
 			const voice=this.getNodeParameter('voice',0) as string;
 			const lang=this.getNodeParameter('lang',0) as string;
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1151,7 +1165,8 @@ export class FriendGrid implements INodeType {
 							source: 'n8n',
 							lang:lang,
 							voice:voice,
-							machine_detection: 0
+							machine_detection: 0,
+							schedule:unixTimestamp
 						},
 					],
 				},
@@ -1220,6 +1235,13 @@ export class FriendGrid implements INodeType {
 			const address_postal_code = this.getNodeParameter('address_postal_code', 0) as string;
 			const address_country=this.getNodeParameter('country',0) as string;
 			const return_address_id = this.getNodeParameter('return_address_id', 0) as number;
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
 			// const custom_string = this.getNodeParameter('custom_string', 0) as string;
 			const options: OptionsWithUri = {
 				headers: {
@@ -1239,6 +1261,7 @@ export class FriendGrid implements INodeType {
 							address_name: address_name,
 							address_line_2: address_line_2,
 							address_city: address_city,
+							schedule:unixTimestamp,
 						},
 					],
 				},
