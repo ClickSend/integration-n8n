@@ -820,7 +820,7 @@ export class FriendGrid implements INodeType {
 				const adressResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForReturnadress);
 				console.log(adressResponse);
 				const returnadress=adressResponse.data.data;
-				if(returnadress.length<1)
+				if(adressResponse!=null)
 					{
 						returnData.push(
 							{
@@ -859,7 +859,7 @@ export class FriendGrid implements INodeType {
 				const dedicatednumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsFordedicatednumber);
 				console.log(dedicatednumberResponse);
 				const dedicated_number=dedicatednumberResponse.data.data;
-				if(dedicated_number.length<1)
+				if(dedicatednumberResponse!=null)
 					{
 						returnData.push(
 							{
