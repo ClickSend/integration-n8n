@@ -348,7 +348,7 @@ export class FriendGrid implements INodeType {
 				},
 			},
 			{
-				displayName: 'File URL',
+				displayName: 'Letter URL',
 				name: 'url',
 				type: 'string',
 				default: '',
@@ -421,21 +421,21 @@ export class FriendGrid implements INodeType {
 					},
 				},
 			},
-			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'From email',
-				name: 'from_email',
-				type: 'string',
-				default: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
-				description: 'Enter the email address that you want replies sent to.',
-				displayOptions: {
-					show: {
-						operation: ['send'],
-						resource: ['fax'],
-					},
-				},
-			},
+			// {
+			// 	// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+			// 	displayName: 'From email',
+			// 	name: 'from_email',
+			// 	type: 'string',
+			// 	default: '',
+			// 	// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
+			// 	description: 'Enter the email address that you want replies sent to.',
+			// 	displayOptions: {
+			// 		show: {
+			// 			operation: ['send'],
+			// 			resource: ['fax'],
+			// 		},
+			// 	},
+			// },
 			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Voice type',
@@ -728,7 +728,7 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['fax','sms','list','voice','card'],
+						resource: ['sms','list','voice','card'],
 					}
 				},
 			},
@@ -1075,14 +1075,14 @@ export class FriendGrid implements INodeType {
 			const from = this.getNodeParameter('from', 0) as string;
 			const to = this.getNodeParameter('to', 0) as number;
 			const file_url = this.getNodeParameter('url', 0) as string;
-			const from_email=this.getNodeParameter('from_email',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
+			//const from_email=this.getNodeParameter('from_email',0) as string;
+			// const schedule=this.getNodeParameter('schedule',0) as string;
+			// const dateObject = new Date(schedule);
+			// let unixTimestamp = null;
+			// if(schedule!=null)
+			// 	{
+			// 		unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+			// 	}
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1090,13 +1090,12 @@ export class FriendGrid implements INodeType {
 				method: 'POST',
 				body: {
 					file_url:file_url,
-					from_email:from_email,
 					messages: [
 						{
 						to: to,
       					from: from,
       					source: "n8n",
-					  	schedule:unixTimestamp
+					  	//schedule:unixTimestamp
 						},
 					],
 				},
