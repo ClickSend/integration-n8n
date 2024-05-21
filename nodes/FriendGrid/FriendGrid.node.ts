@@ -728,7 +728,7 @@ export class FriendGrid implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['sms','list','voice','card'],
+						resource: ['sms','list','voice','card','fax'],
 					}
 				},
 			},
@@ -820,7 +820,7 @@ export class FriendGrid implements INodeType {
 				const adressResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForReturnadress);
 				console.log(adressResponse);
 				const returnadress=adressResponse.data.data;
-				if(adressResponse!=null)
+				if(adressResponse.data.total<1)
 					{
 						returnData.push(
 							{
@@ -857,9 +857,9 @@ export class FriendGrid implements INodeType {
 				};
 
 				const dedicatednumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsFordedicatednumber);
-				console.log(dedicatednumberResponse);
+				//console.log(dedicatednumberResponse);
 				const dedicated_number=dedicatednumberResponse.data.data;
-				if(dedicatednumberResponse!=null)
+				if(dedicatednumberResponse.data.total<1)
 					{
 						returnData.push(
 							{
@@ -1076,13 +1076,13 @@ export class FriendGrid implements INodeType {
 			const to = this.getNodeParameter('to', 0) as number;
 			const file_url = this.getNodeParameter('url', 0) as string;
 			//const from_email=this.getNodeParameter('from_email',0) as string;
-			// const schedule=this.getNodeParameter('schedule',0) as string;
-			// const dateObject = new Date(schedule);
-			// let unixTimestamp = null;
-			// if(schedule!=null)
-			// 	{
-			// 		unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-			// 	}
+			const schedule=this.getNodeParameter('schedule',0) as string;
+			const dateObject = new Date(schedule);
+			let unixTimestamp = null;
+			if(schedule!=null)
+				{
+					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
+				}
 			const options: OptionsWithUri = {
 				headers: {
 					Accept: 'application/json',
@@ -1095,7 +1095,7 @@ export class FriendGrid implements INodeType {
 						to: to,
       					from: from,
       					source: "n8n",
-					  	//schedule:unixTimestamp
+					  	schedule:unixTimestamp
 						},
 					],
 				},
