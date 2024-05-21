@@ -571,7 +571,7 @@ export class FriendGrid implements INodeType {
 				required:true,
 				default: '',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-excess-final-period
-				description: 'Enter the return address here.',
+				description: 'Select the return address from the drop down list',
 				typeOptions:{
 					loadOptionsMethod:'returnadress'
 				},
