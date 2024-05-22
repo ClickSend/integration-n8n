@@ -208,6 +208,7 @@ export class FriendGrid implements INodeType {
 				noDataExpression: true,
 			},
 			//here is parameter that we need for https call
+
 			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Sender name/From field',
@@ -216,14 +217,14 @@ export class FriendGrid implements INodeType {
 				default: '',
 				placeholder: '+6144444444',
 				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
-				description: '<a href="https://help.clicksend.com/article/mnheutc0ri-registering-a-sender-id?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the <a href="https://dashboard.clicksend.com/sender-ids/manage-senders">Dashboard.</a>',
+				description: '<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the <a href="https://dashboard.clicksend.com/sender-ids/manage-senders">Dashboard.</a>',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
 				},
 				displayOptions: {
 					show: {
 						operation: ['send'],
-						resource: ['sms', 'list',],
+						resource: ['sms', 'list',]
 					},
 				},
 			},
@@ -857,9 +858,35 @@ export class FriendGrid implements INodeType {
 				};
 
 				const dedicatednumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsFordedicatednumber);
-				//console.log(dedicatednumberResponse);
 				const dedicated_number=dedicatednumberResponse.data.data;
-				if(dedicatednumberResponse.data.total<1)
+				console.log(dedicatednumberResponse)
+				//fetch ownnumber
+				const optionsForownnumber: OptionsWithUri = {
+					headers: {
+						Accept: 'application/json',
+					},
+					method: 'GET',
+					uri: 'https://rest.clicksend.com/v3/own-numbers',
+					json: true,
+				};
+
+				const ownnumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForownnumber);
+				const own_number=ownnumberResponse.own_numbers;
+				console.log(own_number.length)
+				//fetch alpha tag
+				const optionsForalphanumber: OptionsWithUri = {
+					headers: {
+						Accept: 'application/json',
+					},
+					method: 'GET',
+					uri: 'https://rest.clicksend.com/v3/alpha-tags',
+					json: true,
+				};
+
+				const alphanumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForalphanumber);
+				const alpha_number=alphanumberResponse.alpha_tags;
+				console.log(alpha_number.length)
+				if(dedicatednumberResponse.data.total<1 && (own_number.length <1) && (alpha_number.length<1))
 					{
 						returnData.push(
 							{
@@ -867,15 +894,37 @@ export class FriendGrid implements INodeType {
 								value:"",
 							})
 					}else
-					{
-						for(let i=0;i<dedicated_number.length;i++)
+					{	if(dedicatednumberResponse.data.total>0)
+						{
+							for(let i=0;i<dedicated_number.length;i++)
+								{
+									returnData.push(
+										{
+													name: dedicated_number[i].dedicated_number,
+													value: dedicated_number[i].dedicated_number,
+										})
+								};
+						}if(own_number.length>0)
 							{
-								returnData.push(
+								for(let i=0;i<own_number.length;i++)
 									{
-										name: dedicated_number[i].dedicated_number,
-										value: dedicated_number[i].dedicated_number,
-									})
-							};
+										returnData.push(
+											{
+														name: own_number[i].phone_number,
+														value: own_number[i].phone_number,
+											})
+									};
+							}if(alpha_number.length>0)
+								{
+									for(let i=0;i<alpha_number.length;i++)
+										{
+											returnData.push(
+												{
+															name: alpha_number[i].alpha_tag,
+															value: alpha_number[i].alpha_tag,
+												})
+										};
+								}
 
 
 					}
