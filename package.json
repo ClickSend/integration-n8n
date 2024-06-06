@@ -1,15 +1,15 @@
 {
   "name": "n8n-nodes-clicksend",
   "version": "1.1.0",
-  "description": "",
+  "description": "Integrate ClickSend with your tech stack using n8n. Configure multi-channel communications. Send SMS, MMS, Voice, Fax and Letters.  You can connect ClickSend to any API, database, webhook, and more.",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://www.clicksend.com/",
   "author": {
-    "name": "waqas",
-    "email": "waqas777666@gmail.com"
+    "name": "ClickSend",
+    "email": "support@clicksend.com"
   },
   "repository": {
     "type": "git",
