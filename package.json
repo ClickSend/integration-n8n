@@ -30,11 +30,11 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/FriendGridApi.credentials.js"
+      "dist/credentials/ClickSendApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/FriendGrid/FriendGrid.node.js",
-      "dist/nodes/FriendGrid/FriendGridTrigger.node.js"
+      "dist/nodes/ClickSend/ClickSend.node.js",
+      "dist/nodes/ClickSend/ClickSendTrigger.node.js"
 
     ]
   },

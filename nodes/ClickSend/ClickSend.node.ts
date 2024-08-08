@@ -2,7 +2,7 @@
 import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-core';
 import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { OptionsWithUri } from 'request';
-export class FriendGrid implements INodeType {
+export class ClickSend implements INodeType {
 	description: INodeTypeDescription = {
 		// Basic node details will go here
 		displayName: 'ClickSend',
@@ -819,7 +819,7 @@ export class FriendGrid implements INodeType {
 				};
 
 				const adressResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForReturnadress);
-				console.log(adressResponse);
+
 				const returnadress=adressResponse.data.data;
 				if(adressResponse.data.total<1)
 					{
@@ -859,7 +859,7 @@ export class FriendGrid implements INodeType {
 
 				const dedicatednumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsFordedicatednumber);
 				const dedicated_number=dedicatednumberResponse.data.data;
-				console.log(dedicatednumberResponse)
+
 				//fetch ownnumber
 				const optionsForownnumber: OptionsWithUri = {
 					headers: {
@@ -872,7 +872,7 @@ export class FriendGrid implements INodeType {
 
 				const ownnumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForownnumber);
 				const own_number=ownnumberResponse.own_numbers;
-				console.log(own_number.length)
+
 				//fetch alpha tag
 				const optionsForalphanumber: OptionsWithUri = {
 					headers: {
@@ -885,7 +885,7 @@ export class FriendGrid implements INodeType {
 
 				const alphanumberResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForalphanumber);
 				const alpha_number=alphanumberResponse.alpha_tags;
-				console.log(alpha_number.length)
+
 				if(dedicatednumberResponse.data.total<1 && (own_number.length <1) && (alpha_number.length<1))
 					{
 						returnData.push(
@@ -946,7 +946,7 @@ export class FriendGrid implements INodeType {
 				};
 
 				const contactlistResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForcontactlist);
-				console.log(contactlistResponse);
+			
 				const contact_list=contactlistResponse.data.data;
 
 				for(let i=0;i<contact_list.length;i++)

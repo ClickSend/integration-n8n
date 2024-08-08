@@ -10,7 +10,7 @@ import type {
 import { OptionsWithUri } from 'request-promise-native';
 
 
-export class FriendGridTrigger implements INodeType {
+export class ClickSendTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ClickSend Trigger',
 		name: 'clicksendTrigger',

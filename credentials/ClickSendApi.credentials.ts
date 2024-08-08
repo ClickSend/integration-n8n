@@ -5,7 +5,7 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class FriendGridApi implements ICredentialType {
+export class ClickSendApi implements ICredentialType {
 	name = 'clickSendApi';
 	displayName = 'ClickSend API';
 	documentationUrl = 'https://dashboard.clicksend.com/account/subaccounts?utm_source=integration&utm_medium=referral&utm_campaign=n8n';
