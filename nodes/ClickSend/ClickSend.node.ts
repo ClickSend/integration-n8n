@@ -946,7 +946,7 @@ export class ClickSend implements INodeType {
 				};
 
 				const contactlistResponse = await this.helpers.requestWithAuthentication.call(this,'clickSendApi',optionsForcontactlist);
-			
+
 				const contact_list=contactlistResponse.data.data;
 
 				for(let i=0;i<contact_list.length;i++)
@@ -1000,8 +1000,7 @@ export class ClickSend implements INodeType {
 				{
 					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
 				}
-		//	if(from.length<11)
-			//	{
+		
 				const options: OptionsWithUri = {
 					headers: {
 						Accept: 'application/json',
