@@ -965,46 +965,29 @@ export class ClickSend implements INodeType {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// execute function go here
-
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-		let responseData;
+		const items = this.getInputData();
 		const returnData = [];
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
-		// Make HTTP request according to https://developers.clicksend.com/docs/rest/v3/
 
-//#1 for sending sms
-		if(resource==='sms' && operation==='send')
-		{
-			const from = this.getNodeParameter('from', 0) as string;
-			const to = this.getNodeParameter('to', 0) as string;
-			const message = this.getNodeParameter('message', 0) as string;
-			const custom_string=this.getNodeParameter('custom_string',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
-		
+		function getUnixTimestamp(schedule: string | null): number | null {
+			if (!schedule) return null;
+			const date = new Date(schedule);
+			return Math.floor(date.getTime() / 1000);
+		}
+
+		for (let i = 0; i < items.length; i++) {
+			if (resource === 'sms' && operation === 'send') {
+				const from = this.getNodeParameter('from', i) as string;
+				const to = this.getNodeParameter('to', i) as string;
+				const message = this.getNodeParameter('message', i) as string;
+				const custom_string = this.getNodeParameter('custom_string', i) as string;
+				const schedule = this.getNodeParameter('schedule', i) as string;
+				const unixTimestamp = getUnixTimestamp(schedule);
+
 				const options: OptionsWithUri = {
-					headers: {
-						Accept: 'application/json',
-					},
+					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
 						messages: [
@@ -1013,314 +996,224 @@ export class ClickSend implements INodeType {
 								to: to,
 								body: message,
 								source: 'n8n',
-								custom_string:custom_string,
-								schedule:unixTimestamp
+								custom_string: custom_string,
+								schedule: unixTimestamp,
 							},
 						],
 					},
-					uri: `https://rest.clicksend.com/v3/sms/send`,
+					uri: 'https://rest.clicksend.com/v3/sms/send',
 					json: true,
 				};
-				responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-				if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
-				{
-				returnData.push(responseData);
-				}else
-				{
-					if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
-					{
-						let data=
-					{
-						status:"INVALID_RECIPIENT",
-						reason:"That number doesn't look quite right. Check it and try again. "
+
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					if (responseData.response_code === 'SUCCESS' && responseData.data.queued_count > 0) {
+						returnData.push(responseData);
+					} else {
+						returnData.push({
+							status: 'ERROR',
+							reason: responseData.data?.messages?.[0]?.status || 'Unknown error',
+						});
 					}
-					returnData.push(data);
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
+			} else if (resource === 'list' && operation === 'send') {
+				const from = this.getNodeParameter('from', i) as string;
+				const list_id = this.getNodeParameter('contact_list', i) as number;
+				const message = this.getNodeParameter('message', i) as string;
+				const custom_string = this.getNodeParameter('custom_string', i) as string;
+				const schedule = this.getNodeParameter('schedule', i) as string;
+				const unixTimestamp = getUnixTimestamp(schedule);
 
-					}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
-					{
-						let data=
-					{
-						status:"INSUFFICIENT_CREDIT",
-						reason:"You don't have enough credit to send. Top up your account."
+				const options: OptionsWithUri = {
+					headers: { Accept: 'application/json' },
+					method: 'POST',
+					body: {
+						messages: [
+							{
+								from: from,
+								list_id: list_id,
+								body: message,
+								source: 'n8n',
+								schedule: unixTimestamp,
+								custom_string: custom_string,
+							},
+						],
+					},
+					uri: 'https://rest.clicksend.com/v3/sms/send',
+					json: true,
+				};
+
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					if (responseData.response_code === 'SUCCESS' && responseData.data.queued_count > 0) {
+						returnData.push(responseData);
+					} else {
+						returnData.push({
+							status: 'ERROR',
+							reason: responseData.data?.messages?.[0]?.status || 'Unknown error',
+						});
 					}
-					returnData.push(data);
-					}
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
+			} else if (resource === 'fax' && operation === 'send') {
+				const from = this.getNodeParameter('from', i) as string;
+				const to = this.getNodeParameter('to', i) as number;
+				const file_url = this.getNodeParameter('url', i) as string;
+				const schedule = this.getNodeParameter('schedule', i) as string;
+				const unixTimestamp = getUnixTimestamp(schedule);
 
+				const options: OptionsWithUri = {
+					headers: { Accept: 'application/json' },
+					method: 'POST',
+					body: {
+						file_url: file_url,
+						messages: [
+							{
+								to: to,
+								from: from,
+								source: 'n8n',
+								schedule: unixTimestamp,
+							},
+						],
+					},
+					uri: 'https://rest.clicksend.com/v3/fax/send',
+					json: true,
+				};
 
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					returnData.push(responseData);
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
+			} else if (resource === 'mms' && operation === 'send') {
+				const from = this.getNodeParameter('from', i) as string;
+				const to = this.getNodeParameter('to', i) as number;
+				const file_url = this.getNodeParameter('url', i) as string;
+				const body = this.getNodeParameter('body', i) as string;
+				const subject = this.getNodeParameter('subject', i) as string;
 
+				const options: OptionsWithUri = {
+					headers: { Accept: 'application/json' },
+					method: 'POST',
+					body: {
+						media_file: file_url,
+						messages: [
+							{
+								subject: subject,
+								from: from,
+								to: to,
+								body: body,
+								source: 'n8n',
+							},
+						],
+					},
+					uri: 'https://rest.clicksend.com/v3/mms/send',
+					json: true,
+				};
+
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					returnData.push(responseData);
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
+			} else if (resource === 'voice' && operation === 'send') {
+				const to = this.getNodeParameter('to', i) as number;
+				const body = this.getNodeParameter('body', i) as string;
+				const voice = this.getNodeParameter('voice', i) as string;
+				const lang = this.getNodeParameter('lang', i) as string;
+				const schedule = this.getNodeParameter('schedule', i) as string;
+				const unixTimestamp = getUnixTimestamp(schedule);
+
+				const options: OptionsWithUri = {
+					headers: { Accept: 'application/json' },
+					method: 'POST',
+					body: {
+						messages: [
+							{
+								to: to,
+								body: body,
+								source: 'n8n',
+								lang: lang,
+								voice: voice,
+								machine_detection: 0,
+								schedule: unixTimestamp,
+							},
+						],
+					},
+					uri: 'https://rest.clicksend.com/v3/voice/send',
+					json: true,
+				};
+
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					returnData.push(responseData);
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
+			} else if (resource === 'letter' && operation === 'send') {
+				const file_url = this.getNodeParameter('url', i) as string;
+				const address_name = this.getNodeParameter('address_name', i) as string;
+				const address_line_1 = this.getNodeParameter('address_line_1', i) as number;
+				const address_line_2 = this.getNodeParameter('address_line_2', i) as string;
+				const address_city = this.getNodeParameter('address_city', i) as string;
+				const address_state = this.getNodeParameter('address_state', i) as string;
+				const address_postal_code = this.getNodeParameter('address_postal_code', i) as string;
+				const address_country = this.getNodeParameter('country', i) as string;
+				const return_address_id = this.getNodeParameter('return_address_id', i) as number;
+				const template_used = this.getNodeParameter('template_used', i) as number;
+				const colour = this.getNodeParameter('colour', i) as number;
+				const duplex = this.getNodeParameter('duplex', i) as number;
+				const priority_post = this.getNodeParameter('priority_post', i) as number;
+
+				const options: OptionsWithUri = {
+					headers: { Accept: 'application/json' },
+					method: 'POST',
+					body: {
+						file_url: file_url,
+						template_used: template_used,
+						colour: colour,
+						duplex: duplex,
+						priority_post: priority_post,
+						source: 'n8n',
+						recipients: [
+							{
+								return_address_id: return_address_id,
+								schedule: 0,
+								address_postal_code: address_postal_code,
+								address_country: address_country,
+								address_line_1: address_line_1,
+								address_state: address_state,
+								address_name: address_name,
+								address_line_2: address_line_2,
+								address_city: address_city,
+							},
+						],
+					},
+					uri: 'https://rest.clicksend.com/v3/post/letters/send',
+					json: true,
+				};
+
+				try {
+					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					returnData.push(responseData);
+				} catch (error: any) {
+					returnData.push({ status: 'ERROR', message: error.message });
+				}
 			}
-
-
-
-
-
-
-
-		}//#2 for sending sms to list
-		else if(resource==='list' && operation==='send')
-		{
-			const from = this.getNodeParameter('from', 0) as string;
-			const list_id = this.getNodeParameter('contact_list', 0) as number;
-			const message = this.getNodeParameter('message', 0) as string;
-			const custom_string=this.getNodeParameter('custom_string',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					messages: [
-						{
-							from: from,
-							list_id: list_id,
-							body: message,
-							source: 'n8n',
-							schedule:unixTimestamp,
-							custom_string:custom_string,
-
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/sms/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			if(responseData.response_code=="SUCCESS" && responseData.data.queued_count>0)
-			{
-			returnData.push(responseData);
-			}else
-			{
-				if(responseData.data.messages[0].status=="INVALID_RECIPIENT")
-				{
-					let data=
-				{
-					status:"INVALID_RECIPIENT",
-					reason:"That number doesn't look quite right. Check it and try again. "
-				}
-				returnData.push(data);
-
-				}else if(responseData.data.messages[0].status=="INSUFFICIENT_CREDIT")
-				{
-					let data=
-				{
-					status:"INSUFFICIENT_CREDIT",
-					reason:"You don't have enough credit to send. Top up your account."
-				}
-				returnData.push(data);
-				}
-			}
-
-		}//#3 for sending fax
-		else if(resource==='fax' && operation==='send')
-		{
-			const from = this.getNodeParameter('from', 0) as string;
-			const to = this.getNodeParameter('to', 0) as number;
-			const file_url = this.getNodeParameter('url', 0) as string;
-			//const from_email=this.getNodeParameter('from_email',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					file_url:file_url,
-					messages: [
-						{
-						to: to,
-      					from: from,
-      					source: "n8n",
-					  	schedule:unixTimestamp
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/fax/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			returnData.push(responseData);
-		}//#4 for sending mms
-		else if(resource==='mms' && operation==='send')
-		{
-			const from = this.getNodeParameter('from', 0) as string;
-			const to = this.getNodeParameter('to', 0) as number;
-			const file_url = this.getNodeParameter('url', 0) as string;
-			const body=this.getNodeParameter('body',0) as string;
-			const subject = this.getNodeParameter('subject', 0) as string;
-
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					media_file:file_url,
-					messages: [
-						{
-							subject:subject,
-							from: from,
-							to: to,
-							body: body,
-							source: 'n8n',
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/mms/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			returnData.push(responseData);
-		}//#5 for sending Voice
-		else if(resource==='voice' && operation==='send')
-		{
-
-			const to = this.getNodeParameter('to', 0) as number;
-			const body=this.getNodeParameter('body',0) as string;
-			const voice=this.getNodeParameter('voice',0) as string;
-			const lang=this.getNodeParameter('lang',0) as string;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					messages: [
-						{
-
-							to: to,
-							body: body,
-							source: 'n8n',
-							lang:lang,
-							voice:voice,
-							machine_detection: 0,
-							schedule:unixTimestamp
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/voice/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			returnData.push(responseData);
-		}//#6 for sending Letter
-		else if(resource==='letter' && operation==='send')
-		{
-			const file_url = this.getNodeParameter('url', 0) as string;
-			const address_name = this.getNodeParameter('address_name', 0) as string;
-			const address_line_1 = this.getNodeParameter('address_line_1', 0) as number;
-			const address_line_2=this.getNodeParameter('address_line_2',0) as string;
-			const address_city = this.getNodeParameter('address_city', 0) as string;
-			const address_state=this.getNodeParameter('address_state',0) as string;
-			const address_postal_code = this.getNodeParameter('address_postal_code', 0) as string;
-			const address_country=this.getNodeParameter('country',0) as string;
-			const return_address_id = this.getNodeParameter('return_address_id', 0) as number;
-			const template_used=this.getNodeParameter('template_used',0) as number;
-			const colour = this.getNodeParameter('colour', 0) as number;
-			const duplex=this.getNodeParameter('duplex',0) as number;
-			const priority_post = this.getNodeParameter('priority_post', 0) as number;
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					file_url:file_url,
-					template_used: template_used,
-  				colour: colour,
-  				duplex: duplex,
-  				priority_post: priority_post,
-					source:"n8n",
-					recipients: [
-						{
-							return_address_id: return_address_id,
-							schedule: 0,
-							address_postal_code: address_postal_code,
-							address_country: address_country,
-							address_line_1: address_line_1,
-							address_state: address_state,
-							address_name: address_name,
-							address_line_2: address_line_2,
-							address_city: address_city
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/post/letters/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			returnData.push(responseData);
-		}//#7 for sending postcard
-		else if(resource==='card' && operation==='send')
-		{
-
-			const file_url = this.getNodeParameter('cardurl', 0) as string;
-			const address_name = this.getNodeParameter('address_name', 0) as string;
-			const address_line_1 = this.getNodeParameter('address_line_1', 0) as number;
-			const address_line_2=this.getNodeParameter('address_line_2',0) as string;
-			const address_city = this.getNodeParameter('address_city', 0) as string;
-			const address_state=this.getNodeParameter('address_state',0) as string;
-			const address_postal_code = this.getNodeParameter('address_postal_code', 0) as string;
-			const address_country=this.getNodeParameter('country',0) as string;
-			const return_address_id = this.getNodeParameter('return_address_id', 0) as number;
-			const schedule=this.getNodeParameter('schedule',0) as string;
-			const dateObject = new Date(schedule);
-			let unixTimestamp = null;
-			if(schedule!=null)
-				{
-					unixTimestamp=Math.floor(dateObject.getTime() / 1000);
-				}
-			// const custom_string = this.getNodeParameter('custom_string', 0) as string;
-			const options: OptionsWithUri = {
-				headers: {
-					Accept: 'application/json',
-				},
-				method: 'POST',
-				body: {
-					file_urls:[file_url],
-					source:"n8n",
-					recipients: [
-						{
-							return_address_id: return_address_id,
-							address_postal_code: address_postal_code,
-							address_country: address_country,
-							address_line_1: address_line_1,
-							address_state: address_state,
-							address_name: address_name,
-							address_line_2: address_line_2,
-							address_city: address_city,
-							schedule:unixTimestamp,
-						},
-					],
-				},
-				uri: `https://rest.clicksend.com/v3/post/postcards/send`,
-				json: true,
-			};
-			responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-			returnData.push(responseData);
 		}
 
-			// Map data to n8n data structure
-			return [this.helpers.returnJsonArray(returnData)];
+		return [this.helpers.returnJsonArray(returnData)];
 	}
+
+
+
+
+
+
 
 }
