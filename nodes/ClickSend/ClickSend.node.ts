@@ -38,7 +38,6 @@ export class ClickSend implements INodeType {
 						value: 'letter',
 					},
 					{
-						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 						name: 'Send MMS',
 						value: 'mms',
 					},
@@ -47,12 +46,10 @@ export class ClickSend implements INodeType {
 						value: 'card',
 					},
 					{
-						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 						name: 'Send SMS',
 						value: 'sms',
 					},
 					{
-						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 						name: 'Send SMS to a contact List',
 						value: 'list',
 					},
@@ -210,13 +207,11 @@ export class ClickSend implements INodeType {
 			//here is parameter that we need for https call
 
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Sender name/From field',
 				name: 'from',
 				type: 'options',
 				default: '',
 				placeholder: '+6144444444',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
 				description: '<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the <a href="https://dashboard.clicksend.com/sender-ids/manage-senders">Dashboard.</a>',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
@@ -229,13 +224,11 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Sender name/From field',
 				name: 'from',
 				type: 'string',
 				default: '',
 				placeholder: 'Eg: +6144444444 ',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-miscased-id
 				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers.",
 				displayOptions: {
 					show: {
@@ -245,13 +238,11 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Sender name/ From Field',
 				name: 'from',
 				type: 'string',
 				default: '',
 				placeholder: 'Eg: +6144444444 ',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
 				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers. "+'<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number">More info</a>',
 				displayOptions: {
 					show: {
@@ -261,7 +252,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Recipient number / To field',
 				name: 'to',
 				type: 'string',
@@ -277,14 +267,12 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased, n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 				displayName: 'Name or ID of contact list',
 				name: 'contact_list',
 				type: 'options',
 				default: '',
 				required: true,
 				placeholder: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-missing-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
 				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. <a href="https://dashboard.clicksend.com/lists/">More info</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'contactlist',
@@ -297,7 +285,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Message body',
 				name: 'message',
 				type: 'string',
@@ -322,7 +309,6 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'The URL for the image or GIF you want to send.',
 				displayOptions: {
 					show: {
@@ -339,7 +325,6 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'The URL for the image you want to send as a postcard.',
 				displayOptions: {
 					show: {
@@ -355,7 +340,6 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'The URL for the letter you want to send.',
 				displayOptions: {
 					show: {
@@ -365,7 +349,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Message body',
 				name: 'body',
 				type: 'string',
@@ -375,7 +358,6 @@ export class ClickSend implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'Max of 1500 characters allowed in MMS.',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'Write your message here.',
 				displayOptions: {
 					show: {
@@ -385,7 +367,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Message body',
 				name: 'body',
 				type: 'string',
@@ -395,7 +376,6 @@ export class ClickSend implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'You can type your message here.',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'This is the message you will send via voice.',
 				displayOptions: {
 					show: {
@@ -407,13 +387,11 @@ export class ClickSend implements INodeType {
 
 
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Subject line',
 				name: 'subject',
 				type: 'string',
 				required:true,
 				default: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'Enter the subject line of the MMS.',
 				displayOptions: {
 					show: {
@@ -422,21 +400,7 @@ export class ClickSend implements INodeType {
 					},
 				},
 			},
-			// {
-			// 	// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-			// 	displayName: 'From email',
-			// 	name: 'from_email',
-			// 	type: 'string',
-			// 	default: '',
-			// 	// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
-			// 	description: 'Enter the email address that you want replies sent to.',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['send'],
-			// 			resource: ['fax'],
-			// 		},
-			// 	},
-			// },
+			
 			{
 				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Voice type',
@@ -462,13 +426,11 @@ export class ClickSend implements INodeType {
 				},
 			},
 						{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Recipient name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
 				default: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: "The name of the person you're sending the postcard to.",
 				displayOptions: {
 					show: {
@@ -479,13 +441,11 @@ export class ClickSend implements INodeType {
 			},
 			//
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Recipient name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
 				default: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: "The name of the person you're sending the letter to.",
 				displayOptions: {
 					show: {
@@ -550,7 +510,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Postal code',
 				name: 'address_postal_code',
 				type: 'string',
@@ -565,13 +524,11 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased, n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 				displayName: 'Return address',
 				name: 'return_address_id',
 				type: 'options',
 				required:true,
 				default: '',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-excess-final-period
 				description: 'Select the return address from the drop down list',
 				typeOptions:{
 					loadOptionsMethod:'returnadress'
@@ -584,11 +541,9 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options, n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Select country',
 				name: 'country',
 				type: 'options',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period, n8n-nodes-base/node-param-description-wrong-for-dynamic-options
 				description: 'Select the country from the dropdown list.',
 				noDataExpression: true,
 				default: '',
@@ -603,7 +558,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Letter template',
 				name: 'template_used',
 				type: 'options',
@@ -627,7 +581,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Colour printing',
 				name: 'colour',
 				type: 'options',
@@ -642,7 +595,6 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'Please select yes for colour or no for black and white.',
 				displayOptions: {
 					show: {
@@ -652,7 +604,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Double-sided printing',
 				name: 'duplex',
 				type: 'options',
@@ -667,7 +618,6 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'If you would like double-sided printing please select yes.',
 				displayOptions: {
 					show: {
@@ -677,7 +627,6 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 				displayName: 'Priority post',
 				name: 'priority_post',
 				type: 'options',
@@ -692,7 +641,6 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-excess-final-period
 				description: 'If you want to send the letter via priority post please select yes.',
 				displayOptions: {
 					show: {
@@ -702,11 +650,9 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 				displayName: 'Language',
 				name: 'lang',
 				type: 'options',
-				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options, n8n-nodes-base/node-param-description-excess-final-period
 				description: 'Choose the language that matches your text so your message is read correctly.',
 				noDataExpression: true,
 				default: '',
@@ -1209,11 +1155,4 @@ export class ClickSend implements INodeType {
 
 		return [this.helpers.returnJsonArray(returnData)];
 	}
-
-
-
-
-
-
-
 }
