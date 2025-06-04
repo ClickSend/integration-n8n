@@ -19,7 +19,6 @@
 		"declaration": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
-		"types": ["node", "request", "request-promise-native"],
 		"outDir": "./dist/",
 	},
 	"include": [

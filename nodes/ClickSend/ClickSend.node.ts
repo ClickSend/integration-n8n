@@ -1,12 +1,12 @@
-/* eslint-disable n8n-nodes-base/node-param-description-excess-final-period */
 import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-core';
-import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import { INodeExecutionData, INodeType, INodeTypeDescription,NodeOperationError } from 'n8n-workflow';
 import { OptionsWithUri } from 'request';
+
 export class ClickSend implements INodeType {
 	description: INodeTypeDescription = {
 		// Basic node details will go here
 		displayName: 'ClickSend',
-		name: 'friendGrid',
+		name: 'ClickSend',
 		icon: 'file:clickSend.svg',
 		group: ['transform'],
 		version: 1,
@@ -38,6 +38,7 @@ export class ClickSend implements INodeType {
 						value: 'letter',
 					},
 					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 						name: 'Send MMS',
 						value: 'mms',
 					},
@@ -46,10 +47,12 @@ export class ClickSend implements INodeType {
 						value: 'card',
 					},
 					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 						name: 'Send SMS',
 						value: 'sms',
 					},
 					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 						name: 'Send SMS to a contact List',
 						value: 'list',
 					},
@@ -207,12 +210,12 @@ export class ClickSend implements INodeType {
 			//here is parameter that we need for https call
 
 			{
-				displayName: 'Sender name/From field',
+				displayName: 'Sender Name / From Field Name or ID',
 				name: 'from',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: '',
 				placeholder: '+6144444444',
-				description: '<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number?utm_source=integration&utm_medium=referral&utm_campaign=n8n">More info</a> : Enter the number or name (alpha tag) you’re sending from. If you leave this field blank, we’ll send your messages from a shared number. View your numbers in the <a href="https://dashboard.clicksend.com/sender-ids/manage-senders">Dashboard.</a>',
 				typeOptions: {
 					loadOptionsMethod: 'dedicatednumber',
 				},
@@ -224,7 +227,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Sender name/From field',
+				displayName: 'Sender Name / From Field',
 				name: 'from',
 				type: 'string',
 				default: '',
@@ -238,7 +241,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Sender name/ From Field',
+				displayName: 'Sender Name/ From Field',
 				name: 'from',
 				type: 'string',
 				default: '',
@@ -252,7 +255,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Recipient number / To field',
+				displayName: 'Recipient Number / To Field',
 				name: 'to',
 				type: 'string',
 				default: '',
@@ -267,13 +270,13 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Name or ID of contact list',
+				displayName: 'Name / ID Of Contact List Name or ID',
 				name: 'contact_list',
 				type: 'options',
 				default: '',
 				required: true,
 				placeholder: '',
-				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. <a href="https://dashboard.clicksend.com/lists/">More info</a>.',
+				description: 'Enter the name or the ID of the contact list you want to send to. You can find the contact list name or ID via the ClickSend Dashboard. <a href="https://dashboard.clicksend.com/lists/">More info</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'contactlist',
 				},
@@ -285,7 +288,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message body',
+				displayName: 'Message Body',
 				name: 'message',
 				type: 'string',
 				typeOptions: {
@@ -309,7 +312,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				description: 'The URL for the image or GIF you want to send.',
+				description: 'The URL for the image or GIF you want to send',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -325,7 +328,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				description: 'The URL for the image you want to send as a postcard.',
+				description: 'The URL for the image you want to send as a postcard',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -340,7 +343,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required:true,
 				placeholder: 'https://docs.google.com/yurejfJFM/ID',
-				description: 'The URL for the letter you want to send.',
+				description: 'The URL for the letter you want to send',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -349,7 +352,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message body',
+				displayName: 'Message Body',
 				name: 'body',
 				type: 'string',
 				typeOptions: {
@@ -358,7 +361,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'Max of 1500 characters allowed in MMS.',
-				description: 'Write your message here.',
+				description: 'Write your message here',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -367,7 +370,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message body',
+				displayName: 'Message Body',
 				name: 'body',
 				type: 'string',
 				typeOptions: {
@@ -376,7 +379,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'You can type your message here.',
-				description: 'This is the message you will send via voice.',
+				description: 'This is the message you will send via voice',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -387,12 +390,12 @@ export class ClickSend implements INodeType {
 
 
 			{
-				displayName: 'Subject line',
+				displayName: 'Subject Line',
 				name: 'subject',
 				type: 'string',
 				required:true,
 				default: '',
-				description: 'Enter the subject line of the MMS.',
+				description: 'Enter the subject line of the MMS',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -402,8 +405,7 @@ export class ClickSend implements INodeType {
 			},
 			
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Voice type',
+				displayName: 'Voice Type',
 				name: 'voice',
 				type: 'options',
 				options: [
@@ -426,12 +428,12 @@ export class ClickSend implements INodeType {
 				},
 			},
 						{
-				displayName: 'Recipient name',
+				displayName: 'Recipient Name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
 				default: '',
-				description: "The name of the person you're sending the postcard to.",
+				description: 'The name of the person you\'re sending the postcard to',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -439,14 +441,14 @@ export class ClickSend implements INodeType {
 					},
 				},
 			},
-			//
+			
 			{
-				displayName: 'Recipient name',
+				displayName: 'Recipient Name',
 				name: 'address_name',
 				type: 'string',
 				required:true,
 				default: '',
-				description: "The name of the person you're sending the letter to.",
+				description: 'The name of the person you\'re sending the letter to',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -510,7 +512,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Postal code',
+				displayName: 'Postal Code',
 				name: 'address_postal_code',
 				type: 'string',
 				required:true,
@@ -524,12 +526,12 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Return address',
+				displayName: 'Return Address Name or ID',
 				name: 'return_address_id',
 				type: 'options',
 				required:true,
 				default: '',
-				description: 'Select the return address from the drop down list',
+				description: 'Select the return address from the drop down list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions:{
 					loadOptionsMethod:'returnadress'
 				},
@@ -541,10 +543,10 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Select country',
+				displayName: 'Select Country Name or ID',
 				name: 'country',
 				type: 'options',
-				description: 'Select the country from the dropdown list.',
+				description: 'Select the country from the dropdown list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				noDataExpression: true,
 				default: '',
 				typeOptions: {
@@ -558,7 +560,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Letter template',
+				displayName: 'Letter Template',
 				name: 'template_used',
 				type: 'options',
 				options: [
@@ -572,7 +574,7 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				description: "If you're using our letter template please select yes.",
+				description: 'If you\'re using our letter template please select yes',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -581,7 +583,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Colour printing',
+				displayName: 'Colour Printing',
 				name: 'colour',
 				type: 'options',
 				options: [
@@ -595,7 +597,7 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'Please select yes for colour or no for black and white.',
+				description: 'Please select yes for colour or no for black and white',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -604,7 +606,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Double-sided printing',
+				displayName: 'Double-Sided Printing',
 				name: 'duplex',
 				type: 'options',
 				options: [
@@ -618,7 +620,7 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'If you would like double-sided printing please select yes.',
+				description: 'If you would like double-sided printing please select yes',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -627,7 +629,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Priority post',
+				displayName: 'Priority Post',
 				name: 'priority_post',
 				type: 'options',
 				options: [
@@ -641,7 +643,7 @@ export class ClickSend implements INodeType {
 					},
 				],
 				default: 0,
-				description: 'If you want to send the letter via priority post please select yes.',
+				description: 'If you want to send the letter via priority post please select yes',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -650,10 +652,10 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Language',
+				displayName: 'Language Name or ID',
 				name: 'lang',
 				type: 'options',
-				description: 'Choose the language that matches your text so your message is read correctly.',
+				description: 'Choose the language that matches your text so your message is read correctly. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				noDataExpression: true,
 				default: '',
 				typeOptions: {
@@ -912,18 +914,21 @@ export class ClickSend implements INodeType {
 
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-		const items = this.getInputData();
-		const returnData = [];
-		const resource = this.getNodeParameter('resource', 0) as string;
-		const operation = this.getNodeParameter('operation', 0) as string;
+	const items = this.getInputData();
+	const returnData: INodeExecutionData[] = [];
+	const resource = this.getNodeParameter('resource', 0) as string;
+	const operation = this.getNodeParameter('operation', 0) as string;
 
-		function getUnixTimestamp(schedule: string | null): number | null {
-			if (!schedule) return null;
-			const date = new Date(schedule);
-			return Math.floor(date.getTime() / 1000);
-		}
+	function getUnixTimestamp(schedule: string | null): number | null {
+		if (!schedule) return null;
+		const date = new Date(schedule);
+		return Math.floor(date.getTime() / 1000);
+	}
 
-		for (let i = 0; i < items.length; i++) {
+	for (let i = 0; i < items.length; i++) {
+		try {
+			let options: OptionsWithUri;
+
 			if (resource === 'sms' && operation === 'send') {
 				const from = this.getNodeParameter('from', i) as string;
 				const to = this.getNodeParameter('to', i) as string;
@@ -932,7 +937,7 @@ export class ClickSend implements INodeType {
 				const schedule = this.getNodeParameter('schedule', i) as string;
 				const unixTimestamp = getUnixTimestamp(schedule);
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -950,21 +955,9 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/sms/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					if (responseData.response_code === 'SUCCESS' && responseData.data.queued_count > 0) {
-						returnData.push(responseData);
-					} else {
-						returnData.push({
-							status: 'ERROR',
-							reason: responseData.data?.messages?.[0]?.status || 'Unknown error',
-						});
-					}
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
-			} else if (resource === 'list' && operation === 'send') {
+			else if (resource === 'list' && operation === 'send') {
 				const from = this.getNodeParameter('from', i) as string;
 				const list_id = this.getNodeParameter('contact_list', i) as number;
 				const message = this.getNodeParameter('message', i) as string;
@@ -972,7 +965,7 @@ export class ClickSend implements INodeType {
 				const schedule = this.getNodeParameter('schedule', i) as string;
 				const unixTimestamp = getUnixTimestamp(schedule);
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -990,28 +983,16 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/sms/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					if (responseData.response_code === 'SUCCESS' && responseData.data.queued_count > 0) {
-						returnData.push(responseData);
-					} else {
-						returnData.push({
-							status: 'ERROR',
-							reason: responseData.data?.messages?.[0]?.status || 'Unknown error',
-						});
-					}
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
-			} else if (resource === 'fax' && operation === 'send') {
+			else if (resource === 'fax' && operation === 'send') {
 				const from = this.getNodeParameter('from', i) as string;
 				const to = this.getNodeParameter('to', i) as number;
 				const file_url = this.getNodeParameter('url', i) as string;
 				const schedule = this.getNodeParameter('schedule', i) as string;
 				const unixTimestamp = getUnixTimestamp(schedule);
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -1028,21 +1009,16 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/fax/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					returnData.push(responseData);
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
-			} else if (resource === 'mms' && operation === 'send') {
+			else if (resource === 'mms' && operation === 'send') {
 				const from = this.getNodeParameter('from', i) as string;
 				const to = this.getNodeParameter('to', i) as number;
 				const file_url = this.getNodeParameter('url', i) as string;
 				const body = this.getNodeParameter('body', i) as string;
 				const subject = this.getNodeParameter('subject', i) as string;
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -1060,14 +1036,9 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/mms/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					returnData.push(responseData);
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
-			} else if (resource === 'voice' && operation === 'send') {
+			else if (resource === 'voice' && operation === 'send') {
 				const to = this.getNodeParameter('to', i) as number;
 				const body = this.getNodeParameter('body', i) as string;
 				const voice = this.getNodeParameter('voice', i) as string;
@@ -1075,7 +1046,7 @@ export class ClickSend implements INodeType {
 				const schedule = this.getNodeParameter('schedule', i) as string;
 				const unixTimestamp = getUnixTimestamp(schedule);
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -1094,14 +1065,9 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/voice/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					returnData.push(responseData);
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
-			} else if (resource === 'letter' && operation === 'send') {
+			else if (resource === 'letter' && operation === 'send') {
 				const file_url = this.getNodeParameter('url', i) as string;
 				const address_name = this.getNodeParameter('address_name', i) as string;
 				const address_line_1 = this.getNodeParameter('address_line_1', i) as number;
@@ -1116,7 +1082,7 @@ export class ClickSend implements INodeType {
 				const duplex = this.getNodeParameter('duplex', i) as number;
 				const priority_post = this.getNodeParameter('priority_post', i) as number;
 
-				const options: OptionsWithUri = {
+				options = {
 					headers: { Accept: 'application/json' },
 					method: 'POST',
 					body: {
@@ -1143,16 +1109,41 @@ export class ClickSend implements INodeType {
 					uri: 'https://rest.clicksend.com/v3/post/letters/send',
 					json: true,
 				};
+			}
 
-				try {
-					const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
-					returnData.push(responseData);
-				} catch (error: any) {
-					returnData.push({ status: 'ERROR', message: error.message });
-				}
+			else {
+				throw new NodeOperationError(this.getNode(), `Unsupported resource (${resource}) or operation (${operation})`);
+
+			}
+
+			const responseData = await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+
+			const executionData = this.helpers.constructExecutionMetaData(
+				this.helpers.returnJsonArray([responseData]),
+				{ itemData: { item: i } }
+			);
+			returnData.push(...executionData);
+		} catch (error: any) {
+			if (this.continueOnFail()) {
+				const executionError = this.helpers.constructExecutionMetaData(
+					this.helpers.returnJsonArray([{ error: error.message }]),
+					{ itemData: { item: i } }
+				);
+				returnData.push(...executionError);
+			} else {
+				throw error;
 			}
 		}
-
-		return [this.helpers.returnJsonArray(returnData)];
 	}
+
+	return [returnData];
+}
+
+
+
+
+
+
+
+
 }
