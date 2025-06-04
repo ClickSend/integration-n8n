@@ -38,8 +38,7 @@ export class ClickSend implements INodeType {
 						value: 'letter',
 					},
 					{
-						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
-						name: 'Send MMS',
+						name: 'Send MMS.',
 						value: 'mms',
 					},
 					{
@@ -51,9 +50,9 @@ export class ClickSend implements INodeType {
 						name: 'Send SMS',
 						value: 'sms',
 					},
+
 					{
-						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-						name: 'Send SMS to a contact List',
+						name: 'Send SMS to a Contact List',
 						value: 'list',
 					},
 					{
@@ -64,7 +63,6 @@ export class ClickSend implements INodeType {
 				default: 'sms',
 				noDataExpression: true,
 				required: true,
-				//description: 'Send a Message to number',
 			},
 			//operation here
 			{
@@ -403,7 +401,7 @@ export class ClickSend implements INodeType {
 					},
 				},
 			},
-			
+
 			{
 				displayName: 'Voice Type',
 				name: 'voice',
@@ -441,7 +439,7 @@ export class ClickSend implements INodeType {
 					},
 				},
 			},
-			
+
 			{
 				displayName: 'Recipient Name',
 				name: 'address_name',
