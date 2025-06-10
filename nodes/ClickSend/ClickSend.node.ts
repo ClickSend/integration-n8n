@@ -1,6 +1,6 @@
 import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-core';
-import { INodeExecutionData, INodeType, INodeTypeDescription,NodeOperationError } from 'n8n-workflow';
-import { OptionsWithUri } from 'request';
+import { INodeExecutionData, INodeType, INodeTypeDescription,NodeOperationError,IHttpRequestOptions } from 'n8n-workflow';
+
 
 export class ClickSend implements INodeType {
 	description: INodeTypeDescription = {
@@ -703,12 +703,12 @@ export class ClickSend implements INodeType {
 			async country(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsForCountries: OptionsWithUri = {
+				const optionsForCountries: IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/countries',
+					url: 'https://rest.clicksend.com/v3/countries',
 					json: true,
 				};
 
@@ -729,12 +729,12 @@ export class ClickSend implements INodeType {
 			async language(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsForLanguage: OptionsWithUri = {
+				const optionsForLanguage: IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/voice/lang',
+					url: 'https://rest.clicksend.com/v3/voice/lang',
 					json: true,
 				};
 
@@ -755,12 +755,12 @@ export class ClickSend implements INodeType {
 			async returnadress(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsForReturnadress: OptionsWithUri = {
+				const optionsForReturnadress: IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/post/return-addresses',
+					url: 'https://rest.clicksend.com/v3/post/return-addresses',
 					json: true,
 				};
 
@@ -794,12 +794,12 @@ export class ClickSend implements INodeType {
 			async dedicatednumber(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsFordedicatednumber: OptionsWithUri = {
+				const optionsFordedicatednumber = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/numbers',
+					url: 'https://rest.clicksend.com/v3/numbers',
 					json: true,
 				};
 
@@ -807,12 +807,12 @@ export class ClickSend implements INodeType {
 				const dedicated_number=dedicatednumberResponse.data.data;
 
 				//fetch ownnumber
-				const optionsForownnumber: OptionsWithUri = {
+				const optionsForownnumber = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/own-numbers',
+					url: 'https://rest.clicksend.com/v3/own-numbers',
 					json: true,
 				};
 
@@ -820,12 +820,12 @@ export class ClickSend implements INodeType {
 				const own_number=ownnumberResponse.own_numbers;
 
 				//fetch alpha tag
-				const optionsForalphanumber: OptionsWithUri = {
+				const optionsForalphanumber : IHttpRequestOptions= {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/alpha-tags',
+					url: 'https://rest.clicksend.com/v3/alpha-tags',
 					json: true,
 				};
 
@@ -882,12 +882,12 @@ export class ClickSend implements INodeType {
 			async contactlist(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsForcontactlist: OptionsWithUri = {
+				const optionsForcontactlist : IHttpRequestOptions= {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'GET',
-					uri: 'https://rest.clicksend.com/v3/lists',
+					url: 'https://rest.clicksend.com/v3/lists',
 					json: true,
 				};
 
@@ -925,7 +925,7 @@ export class ClickSend implements INodeType {
 
 	for (let i = 0; i < items.length; i++) {
 		try {
-			let options: OptionsWithUri;
+			let options: IHttpRequestOptions;
 
 			if (resource === 'sms' && operation === 'send') {
 				const from = this.getNodeParameter('from', i) as string;
@@ -950,7 +950,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/sms/send',
+					url: 'https://rest.clicksend.com/v3/sms/send',
 					json: true,
 				};
 			}
@@ -978,7 +978,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/sms/send',
+					url: 'https://rest.clicksend.com/v3/sms/send',
 					json: true,
 				};
 			}
@@ -1004,7 +1004,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/fax/send',
+					url: 'https://rest.clicksend.com/v3/fax/send',
 					json: true,
 				};
 			}
@@ -1031,7 +1031,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/mms/send',
+					url: 'https://rest.clicksend.com/v3/mms/send',
 					json: true,
 				};
 			}
@@ -1060,7 +1060,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/voice/send',
+					url: 'https://rest.clicksend.com/v3/voice/send',
 					json: true,
 				};
 			}
@@ -1104,7 +1104,7 @@ export class ClickSend implements INodeType {
 							},
 						],
 					},
-					uri: 'https://rest.clicksend.com/v3/post/letters/send',
+					url: 'https://rest.clicksend.com/v3/post/letters/send',
 					json: true,
 				};
 			}
@@ -1136,10 +1136,6 @@ export class ClickSend implements INodeType {
 
 	return [returnData];
 }
-
-
-
-
 
 
 
