@@ -1,5 +1,5 @@
-import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-core';
-import { INodeExecutionData, INodeType, INodeTypeDescription,NodeOperationError,IHttpRequestOptions } from 'n8n-workflow';
+import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-workflow';
+import { INodeExecutionData,NodeConnectionType, INodeType, INodeTypeDescription,NodeOperationError,IHttpRequestOptions } from 'n8n-workflow';
 
 
 export class ClickSend implements INodeType {
@@ -14,8 +14,8 @@ export class ClickSend implements INodeType {
 		defaults: {
 			name: 'ClickSend',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionType.Main],
+		outputs: [NodeConnectionType.Main],
 		credentials: [
 			{
 				name: 'clickSendApi',
@@ -794,7 +794,7 @@ export class ClickSend implements INodeType {
 			async dedicatednumber(this: ILoadOptionsFunctions): Promise<any[]> {
 				const returnData: any[] = [];
 
-				const optionsFordedicatednumber = {
+				const optionsFordedicatednumber:IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
@@ -807,7 +807,7 @@ export class ClickSend implements INodeType {
 				const dedicated_number=dedicatednumberResponse.data.data;
 
 				//fetch ownnumber
-				const optionsForownnumber = {
+				const optionsForownnumber:IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
