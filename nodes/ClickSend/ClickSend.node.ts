@@ -1,5 +1,5 @@
 import { IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-workflow';
-import { INodeExecutionData,NodeConnectionType, INodeType, INodeTypeDescription,NodeOperationError,IHttpRequestOptions } from 'n8n-workflow';
+import { INodeExecutionData, INodeType, INodeTypeDescription,NodeOperationError,IHttpRequestOptions } from 'n8n-workflow';
 
 
 export class ClickSend implements INodeType {
@@ -14,8 +14,8 @@ export class ClickSend implements INodeType {
 		defaults: {
 			name: 'ClickSend',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: ['main'],
+		outputs: ['main'],
 		credentials: [
 			{
 				name: 'clickSendApi',
@@ -685,7 +685,7 @@ export class ClickSend implements INodeType {
 				type: 'string',
 				default: '',
 				placeholder: 'this is Custom String',
-				description: 'This is your reference. Max 50 characters.',
+				description: 'This is your reference. Max 50 characters. For example, users might use it to label a message by campaign name, order ID, or test tag (e.g., promo_campaign, order_123, or test_sms).',
 				displayOptions: {
 					show: {
 						operation: ['send'],
