@@ -244,7 +244,7 @@ export class ClickSend implements INodeType {
 				type: 'string',
 				default: '',
 				placeholder: 'Eg: +6144444444 ',
-				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers. "+'<a href="https://help.clicksend.com/article/4kgj7krx00-what-is-a-sender-id-or-sender-number">More info</a>',
+				description: "Sender Number - Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use our free shared numbers. " +'<a href="https://help.clicksend.com/en/collections/57584-numbers-sender-ids">More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],
@@ -295,7 +295,7 @@ export class ClickSend implements INodeType {
 				default: '',
 				required: true,
 				placeholder: 'Write your message here. A standard SMS is 160 standard characters.',
-				description: 'A standard SMS is 160 standard characters.<a href="https://help.clicksend.com/article/h474eseq3a-how-many-characters-can-i-send-in-an-sms?utm_source=integration&utm_medium=referral&utm_campaign=n8n"> More info</a>',
+				description: 'A standard SMS is 160 standard characters.<a href="https://help.clicksend.com/en/articles/42194-understanding-sms-character-limits-and-message-parts?utm_source=integration&utm_medium=referral&utm_campaign=n8n"> More info</a>',
 				displayOptions: {
 					show: {
 						operation: ['send'],
