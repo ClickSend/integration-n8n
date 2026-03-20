@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-clicksendsms",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Integrate ClickSend with your tech stack using n8n. Configure multi-channel communications. Send SMS, MMS, Voice, Fax and Letters.  You can connect ClickSend to any API, database, webhook, and more.",
   "keywords": [
     "n8n-community-node-package"
