@@ -37,10 +37,10 @@ export class ClickSend implements INodeType {
 					// 	name: 'Send Letter',
 					// 	value: 'letter',
 					// },
-					// {
-					// 	name: 'Send MMS.',
-					// 	value: 'mms',
-					// },
+					{
+						name: 'Send MMS.',
+						value: 'mms',
+					},
 					// {
 					// 	name: 'Send Postcard',
 					// 	value: 'card',
