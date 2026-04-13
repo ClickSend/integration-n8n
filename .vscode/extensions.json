@@ -1,4 +1,10 @@
 {
+	 "eslint.workingDirectories": [
+    {
+      "directory": "integration-n8n",
+      "changeProcessCWD": true
+    }
+  ],
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"EditorConfig.EditorConfig",
