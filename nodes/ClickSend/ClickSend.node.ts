@@ -38,7 +38,8 @@ export class ClickSend implements INodeType {
 					// 	value: 'letter',
 					// },
 					{
-						name: 'Send MMS.',
+						// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+						name: 'Send MMS',
 						value: 'mms',
 					},
 					// {
@@ -78,7 +79,7 @@ export class ClickSend implements INodeType {
 					{
 						name: 'Send',
 						value: 'send',
-						description: 'Send a message',
+						description: 'Send a Message',
 						action: 'Send a message',
 					},
 				],
@@ -178,8 +179,8 @@ export class ClickSend implements INodeType {
 					{
 						name: 'Send',
 						value: 'send',
-						description: 'Send an MMS',
-						action: 'Send a mms',
+						description: 'Send MMS',
+						action: 'Send MMS',
 					},
 				],
 				default: 'send',

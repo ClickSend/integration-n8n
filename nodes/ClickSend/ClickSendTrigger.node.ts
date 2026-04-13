@@ -6,18 +6,31 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 	IWebhookResponseData,
+	IHttpRequestOptions,
 } from 'n8n-workflow';
-import { OptionsWithUri } from 'request-promise-native';
 
 
 export class ClickSendTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ClickSend Trigger',
-		name: 'clicksendTrigger',
+		name: 'clicksend Trigger',
 		icon: 'file:clickSend.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Handle ClickSend events via webhooks',
+		triggerPanel: {
+			header: 'ClickSend inbound webhook',
+			executionsHelp: {
+				active: 'Send an SMS to your ClickSend number. n8n receives it at the production webhook URL and triggers this workflow.',
+				inactive:
+					'Example payload for testing and mapping fields:\n\n```json\n{\n  "originalsenderid": "+61477485926",\n  "body": "trigger reply",\n  "message": "trigger reply",\n  "sms": "+61429912603",\n  "from": "+61429912603",\n  "to": "+61477485926",\n  "timestamp": 1775012927,\n  "message_id": "1F12D781-99C1-6D94-96FE-F5A311C8997D",\n  "original_message_id": "1F12D717-947A-6FBC-BBFE-D14C2927CEEF",\n  "original_body": "TESTING TRIGGER",\n  "user_id": 304497,\n  "subaccount_id": 745158,\n  "custom_string": ""\n}\n```',
+			},
+		},
+		hints: [
+			{
+				message: 'Example Webhook Payload:\n{\n  "originalsenderid": "+61477485926",\n  "body": "trigger reply",\n  "message": "trigger reply",\n  "sms": "+61429912603",\n  "from": "+61429912603",\n  "to": "+61477485926",\n  "timestamp": 1775012927,\n  "message_id": "1F12D781-99C1-6D94-96FE-F5A311C8997D",\n  "original_message_id": "1F12D717-947A-6FBC-BBFE-D14C2927CEEF",\n  "original_body": "TESTING TRIGGER",\n  "user_id": 304497,\n  "subaccount_id": 745158,\n  "custom_string": ""\n}',
+			},
+		],
 		defaults: {
 			name: 'ClickSend Trigger',
 		},
@@ -37,17 +50,7 @@ export class ClickSendTrigger implements INodeType {
 				path: 'webhook',
 			},
 		],
-		properties: [
-			{
-				displayName: 'Rule Name',
-				name: 'rule_name',
-				type: 'string',
-				default: "",
-				description:'Write a Rule Name',
-
-			}
-
-		],
+		properties: [],
 	};
 
 
@@ -59,12 +62,12 @@ export class ClickSendTrigger implements INodeType {
 					return false;
 				}
 				try {
-					const options: OptionsWithUri = {
+					const options: IHttpRequestOptions = {
 						headers: {
 							Accept: 'application/json',
 						},
 						method: 'GET',
-						uri: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
+						url: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
 						json: true,
 					};
 					await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
@@ -76,24 +79,28 @@ export class ClickSendTrigger implements INodeType {
 			async create(this: IHookFunctions): Promise<boolean> {
 				const webhookUrl = this.getNodeWebhookUrl('default') as string;
 				const webhookData = this.getWorkflowStaticData('node');
-				const rule = this.getNodeParameter('rule_name', []) as string[];
+
+				const workflowId = String(this.getWorkflow()?.id ?? 'unknown-workflow').replace(/[^a-zA-Z0-9-_]/g, '-');
+				const nodeName = this.getNode().name.replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase();
+				const ruleName = `n8n-wf-${workflowId}-${nodeName}`;
+
 				let responseData;
-				const options: OptionsWithUri = {
+				const options: IHttpRequestOptions = {
 					headers: {
 						Accept: 'application/json',
 					},
 					method: 'POST',
 					body: {
-						message_search_type: 1,
-						message_search_term: 0,
+						message_search_type: 0,
+						message_search_term: '',
 						action_address: webhookUrl,
 						dedicated_number: '*',
-						rule_name: rule,
+						rule_name: ruleName,
 						action: 'URL',
 						enabled: 1,
 						webhook_type: 'json',
 					},
-					uri: `https://rest.clicksend.com/v3/automations/sms/inbound`,
+					url: 'https://rest.clicksend.com/v3/automations/sms/inbound',
 					json: true,
 				};
 				responseData = await this.helpers.requestWithAuthentication.call(
@@ -107,12 +114,12 @@ export class ClickSendTrigger implements INodeType {
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
 				try {
-					const options: OptionsWithUri = {
+					const options: IHttpRequestOptions = {
 						headers: {
 							Accept: 'application/json',
 						},
 						method: 'DELETE',
-						uri: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
+						url: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
 						json: true,
 					};
 					await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
