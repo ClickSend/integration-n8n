@@ -8,7 +8,8 @@ import {
 export class ClickSendApi implements ICredentialType {
 	name = 'clickSendApi';
 	displayName = 'ClickSend API';
-	documentationUrl = 'https://dashboard.clicksend.com/account/subaccounts?utm_source=integration&utm_medium=referral&utm_campaign=n8n';
+	icon: ICredentialType['icon'] = 'file:clickSend.svg';
+	documentationUrl = 'https://developers.clicksend.com/docs/rest/v3/?shell#authentication';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'ClickSend Username',
@@ -40,8 +41,8 @@ export class ClickSendApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://rest.clicksend.com/v3',
-			url: '/account', // Use an API endpoint that does not modify data, such as fetching account details
-    	method: 'GET', // Use a safe HTTP method like GET
+			url: '/account',
+			method: 'GET',
 		},
 	};
 }
