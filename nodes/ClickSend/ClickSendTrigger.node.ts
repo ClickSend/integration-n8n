@@ -8,16 +8,18 @@ import type {
 	IWebhookResponseData,
 	IHttpRequestOptions,
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
 
 export class ClickSendTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ClickSend Trigger',
-		name: 'clicksend Trigger',
+		name: 'clickSendTrigger',
 		icon: 'file:clickSend.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Handle ClickSend events via webhooks',
+		subtitle: 'Inbound SMS webhook',
 		triggerPanel: {
 			header: 'ClickSend inbound webhook',
 			executionsHelp: {
@@ -35,7 +37,7 @@ export class ClickSendTrigger implements INodeType {
 			name: 'ClickSend Trigger',
 		},
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'clickSendApi',
@@ -70,7 +72,7 @@ export class ClickSendTrigger implements INodeType {
 						url: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
 						json: true,
 					};
-					await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					await this.helpers.httpRequestWithAuthentication.call(this, 'clickSendApi', options);
 				} catch (error) {
 					return false;
 				}
@@ -103,7 +105,7 @@ export class ClickSendTrigger implements INodeType {
 					url: 'https://rest.clicksend.com/v3/automations/sms/inbound',
 					json: true,
 				};
-				responseData = await this.helpers.requestWithAuthentication.call(
+				responseData = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'clickSendApi',
 					options,
@@ -122,7 +124,7 @@ export class ClickSendTrigger implements INodeType {
 						url: `https://rest.clicksend.com/v3/automations/sms/inbound/${webhookData.webhookId}`,
 						json: true,
 					};
-					await this.helpers.requestWithAuthentication.call(this, 'clickSendApi', options);
+					await this.helpers.httpRequestWithAuthentication.call(this, 'clickSendApi', options);
 				}  catch (error) {
 					return false;
 				}
