@@ -13,7 +13,7 @@ import { NodeConnectionTypes } from 'n8n-workflow';
 
 export class ClickSendTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'ClickSend Trigger',
+		displayName: 'ClickSend SMS Trigger',
 		name: 'clickSendTrigger',
 		icon: 'file:clickSend.svg',
 		group: ['trigger'],
@@ -34,7 +34,7 @@ export class ClickSendTrigger implements INodeType {
 			},
 		],
 		defaults: {
-			name: 'ClickSend Trigger',
+			name: 'ClickSend SMS Trigger',
 		},
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
