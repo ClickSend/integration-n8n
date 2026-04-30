@@ -38,14 +38,17 @@ export class ClickSend implements INodeType {
 					{
 						name: 'MMS',
 						value: 'mms',
+						action: 'Send MMS action',
 					},
 					{
 						name: 'SMS',
 						value: 'sms',
+						action: 'Send SMS action',
 					},
 					{
 						name: 'Contact List',
 						value: 'list',
+						action: 'Send SMS campaign',
 					},
 				],
 				default: 'sms',
