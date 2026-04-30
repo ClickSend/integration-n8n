@@ -7,8 +7,9 @@ import type {
 	INodeTypeDescription,
 	IWebhookResponseData,
 	IHttpRequestOptions,
+	JsonObject,
 } from 'n8n-workflow';
-import { NodeConnectionTypes } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes } from 'n8n-workflow';
 
 
 export class ClickSendTrigger implements INodeType {
@@ -125,8 +126,10 @@ export class ClickSendTrigger implements INodeType {
 						json: true,
 					};
 					await this.helpers.httpRequestWithAuthentication.call(this, 'clickSendApi', options);
-				}  catch (error) {
-					return false;
+				} catch (error) {
+					throw new NodeApiError(this.getNode(), error as JsonObject, {
+						message: 'Failed to delete inbound SMS webhook rule in ClickSend',
+					});
 				}
 				delete webhookData.webhookId;
 				return true;
