@@ -17,7 +17,8 @@ export class ClickSend implements INodeType {
 		group: ['transform'],
 		version: 1,
 		description: 'Consume ClickSend API',
-		subtitle: '={{$parameter["resource"] + ": " + $parameter["operation"]}}',
+		subtitle:
+			'={{($parameter["operation"] === "send" ? "Send" : $parameter["operation"]) + " " + ($parameter["resource"] === "sms" ? "SMS" : $parameter["resource"] === "mms" ? "MMS" : $parameter["resource"] === "list" ? "SMS Campaign" : $parameter["resource"])}}',
 		defaults: {
 			name: 'ClickSend SMS',
 		},
@@ -31,22 +32,22 @@ export class ClickSend implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Resource',
+				displayName: 'Actions',
 				name: 'resource',
 				type: 'options',
 				options: [
 					{
-						name: 'MMS',
+						name: 'Send MMS',
 						value: 'mms',
 						action: 'Send MMS action',
 					},
 					{
-						name: 'SMS',
+						name: 'Send SMS',
 						value: 'sms',
 						action: 'Send SMS action',
 					},
 					{
-						name: 'Contact List',
+						name: 'Send SMS Campaign',
 						value: 'list',
 						action: 'Send SMS campaign',
 					},
@@ -71,10 +72,15 @@ export class ClickSend implements INodeType {
 				noDataExpression: true,
 			},
 			{
-				displayName: 'Sender Name / From Field Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
+				displayName: 'Sender ID',
 				name: 'from',
 				type: 'options',
-				description:'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+				// description:
+				// 	'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+				// eslint-disable-next-line
+				description:
+					'<a href="https://help.clicksend.com/en/articles/42309-choosing-the-right-sender-id"> More info</a>',
 				default: '',
 				placeholder: '+6144444444',
 				typeOptions: {
@@ -87,13 +93,14 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Sender Name / From Field',
+				displayName: 'Sender ID',
 				name: 'from',
 				type: 'string',
 				default: '',
 				placeholder: 'Eg: +6144444444',
+			// eslint-disable-next-line
 				description:
-					"Sender number. Use a ClickSend dedicated number that you've purchased. If you don't have a ClickSend number, leave it blank to use shared numbers.",
+					'<a Buy a number href="https://dashboard.clicksend.com/sender-ids/buy-a-number"> More info</a>',
 				displayOptions: {
 					show: {
 						resource: ['mms'],
@@ -101,7 +108,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Recipient Number / To Field',
+				displayName: 'Recipient Number',
 				name: 'to',
 				type: 'string',
 				default: '',
@@ -116,7 +123,8 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Name / ID Of Contact List Name or ID',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
+				displayName: 'Recipient Number',
 				name: 'contact_list',
 				type: 'options',
 				default: '',
@@ -133,7 +141,7 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message Body',
+				displayName: 'Message',
 				name: 'message',
 				type: 'string',
 				typeOptions: {
@@ -165,7 +173,20 @@ export class ClickSend implements INodeType {
 				},
 			},
 			{
-				displayName: 'Message Body',
+				displayName: 'Subject Line',
+				name: 'subject',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'Enter the subject line of the MMS',
+				displayOptions: {
+					show: {
+						resource: ['mms'],
+					},
+				},
+			},
+			{
+				displayName: 'Message',
 				name: 'body',
 				type: 'string',
 				typeOptions: {
@@ -175,19 +196,6 @@ export class ClickSend implements INodeType {
 				required: true,
 				placeholder: 'Max of 1500 characters allowed in MMS.',
 				description: 'Write your message here',
-				displayOptions: {
-					show: {
-						resource: ['mms'],
-					},
-				},
-			},
-			{
-				displayName: 'Subject Line',
-				name: 'subject',
-				type: 'string',
-				required: true,
-				default: '',
-				description: 'Enter the subject line of the MMS',
 				displayOptions: {
 					show: {
 						resource: ['mms'],
